@@ -1,0 +1,11 @@
+#!/bin/sh
+case $1 in
+	tests)
+		phpunit --bootstrap tests/bootstrap.php tests $2
+		;;
+	*)
+		echo "Usage: restapp COMMAND"
+		echo "COMMAND:"
+		echo "	tests		runs unit tests"
+		;;
+esac
