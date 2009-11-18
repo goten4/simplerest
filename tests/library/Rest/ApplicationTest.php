@@ -128,21 +128,21 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function passingStringIniConfigPathOptionToConstructorShouldLoadOptions()
     {
-        $application = new RestApplication('testing', dirname(__FILE__) . '/appconfig.ini');
+        $application = new RestApplication('testing', dirname(__FILE__) . '/config/appconfig.ini');
         $this->assertTrue($application->hasOption('foo'));
     }
 
     /** @test */
     public function passingStringXmlConfigPathOptionToConstructorShouldLoadOptions()
     {
-        $application = new RestApplication('testing', dirname(__FILE__) . '/appconfig.xml');
+        $application = new RestApplication('testing', dirname(__FILE__) . '/config/appconfig.xml');
         $this->assertTrue($application->hasOption('foo'));
     }
 
     /** @test */
     public function passingArrayOptionsWithConfigKeyShouldLoadOptions()
     {
-        $application = new RestApplication('testing', array('bar' => 'baz', 'config' => dirname(__FILE__) . '/appconfig.ini'));
+        $application = new RestApplication('testing', array('bar' => 'baz', 'config' => dirname(__FILE__) . '/config/appconfig.ini'));
         $this->assertTrue($application->hasOption('foo'));
         $this->assertTrue($application->hasOption('bar'));
     }
@@ -153,13 +153,13 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase
      */
     public function passingInvalidStringOptionToConstructorShouldRaiseException()
     {
-        $application = new RestApplication('testing', dirname(__FILE__) . '/appconfig');
+        $application = new RestApplication('testing', dirname(__FILE__) . '/config/appconfig');
     }
 
     /** @test */
     public function passingZendConfigToConstructorShouldLoadOptions()
     {
-        $config = new Zend_Config_Ini(dirname(__FILE__) . '/appconfig.ini', 'testing');
+        $config = new Zend_Config_Ini(dirname(__FILE__) . '/config/appconfig.ini', 'testing');
         $application = new RestApplication('testing', $config);
         $this->assertTrue($application->hasOption('foo'));
     }
@@ -167,7 +167,7 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function passingArrayOptionsToConstructorShouldLoadOptions()
     {
-        $config = new Zend_Config_Ini(dirname(__FILE__) . '/appconfig.ini', 'testing');
+        $config = new Zend_Config_Ini(dirname(__FILE__) . '/config/appconfig.ini', 'testing');
         $application = new RestApplication('testing', $config->toArray());
         $this->assertTrue($application->hasOption('foo'));
     }
@@ -195,7 +195,7 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function setOptionsShouldProperlyMergeTwoConfigFileOptions()
     {
-        $application = new RestApplication('production', dirname(__FILE__) . '/appconfig-1.ini');
+        $application = new RestApplication('production', dirname(__FILE__) . '/config/appconfig-1.ini');
         $options = $application->getOptions();
         $this->assertEquals(array('config', 'includePaths'), array_keys($options));
     }
