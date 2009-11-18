@@ -218,5 +218,11 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('baz', $application->getOption('FooBar'));
     }
 
+	/** @test */
+	public function runWithCorrectUriInRequestShouldCallAssociatedResource()
+	{
+		$_SERVER['REQUEST_URI'] = "/user";
+		$this->application->run();
+	}
 }
 
