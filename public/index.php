@@ -14,11 +14,11 @@ set_include_path(implode(PATH_SEPARATOR, array(
     get_include_path(),
 )));
 
-/** Zend_Application */
+/** RestApplication */
 require_once 'Rest/Application.php';  
 
 // Create application, bootstrap, and run
-$application = new Rest_Application(
+$application = new RestApplication(
     APPLICATION_ENV, 
     APPLICATION_PATH . '/configs/application.ini'
 );

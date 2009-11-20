@@ -1,8 +1,11 @@
 <?php
 
-/** RestApplication */
 require_once 'Rest/Application.php';
 require_once 'Rest/Exception.php';
+require_once 'Rest/http/Request.php';
+require_once 'Rest/http/Response.php';
+require_once 'Rest/http/Methods.php';
+require_once 'Rest/http/ResponseCodes.php';
 
 class RestApplicationTest extends PHPUnit_Framework_TestCase
 {
@@ -219,10 +222,13 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase
     }
 
 	/** @test */
-	public function runWithCorrectUriInRequestShouldCallAssociatedResource()
+	public function runWithUnknownUriInRequestShouldReturn404Error()
 	{
 		$_SERVER['REQUEST_URI'] = "/user";
-		$this->application->run();
+		$_SERVER['REQUEST_METHOD'] = HttpMethods::GET;
+		$request = new HttpRequest($_SERVER);
+		$response = $this->application->run(request);
+		$this->assertEquals(HTTP_NOT_FOUND, $response->getResponseCode());
 	}
 }
 

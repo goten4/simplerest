@@ -195,16 +195,6 @@ class RestApplication
     }
 
     /**
-     * Run the application
-     * 
-     * @return void
-     */
-    public function run()
-    {
-        // TODO
-    }
-
-    /**
      * Load configuration file of options
      * 
      * @param  string $file
@@ -230,5 +220,15 @@ class RestApplication
         }
         
         return $config->toArray();
+    }
+
+    /**
+     * Run the application
+     * 
+     * @return void
+     */
+    public function run()
+    {
+        return new HttpResponse(HTTP_NOT_FOUND);
     }
 }
