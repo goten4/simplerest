@@ -227,7 +227,7 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase
 		$_SERVER['REQUEST_URI'] = "/user";
 		$_SERVER['REQUEST_METHOD'] = HttpMethods::GET;
 		$request = new HttpRequest($_SERVER);
-		$response = $this->application->run(request);
+		$response = $this->application->run($request);
 		$this->assertEquals(HTTP_NOT_FOUND, $response->getResponseCode());
 	}
 }
