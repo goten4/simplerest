@@ -296,10 +296,10 @@ class RestApplication {
 		
 		$this->_loadResources();
 		
-		$uri = $request->getUri();
-		$method = $request->getMethod();
-		
 		// Route the URI to the Resource
+		// $router = new ResourceRouter();
+		// $resource = $router->route($request);
+		// $response = $resource->callMethod($request);
 		
         return new HttpResponse(HTTP_NOT_FOUND);
     }
