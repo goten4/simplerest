@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Rest Framework
+ * Rest generic exception
  *
  * @package	Rest
  * @author	Emmanuel Bouton

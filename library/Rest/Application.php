@@ -1,14 +1,18 @@
 <?php
-
 require_once 'Zend/Config/Ini.php';
 require_once 'Zend/Config/Xml.php';
+require_once 'Rest/Http/Request.php';
+require_once 'Rest/Http/Response.php';
+require_once 'Rest/Http/ResponseCodes.php';
 
 /**
  * Rest Application
- * @author Emmanuel Bouton
+ *
+ * @package	Rest
+ * @author	Emmanuel Bouton
  */
-class RestApplication
-{
+class RestApplication {
+
     /**
      * Application environment
      * 
@@ -30,6 +34,14 @@ class RestApplication
      */
     protected $_options = array();
 
+	/**
+	 * Resources base path
+	 * 
+	 * @var string
+	 */
+	protected $_resourcesPath;
+
+
     /**
      * Constructor
      *
@@ -41,8 +53,8 @@ class RestApplication
      * @throws RestException When invalid options are provided
      * @return void
      */
-    public function __construct($environment, $options = null)
-    {
+    public function __construct($environment, $options = null) {
+	
         $this->_environment = (string) $environment;
 
         if (null !== $options) {
@@ -65,9 +77,27 @@ class RestApplication
      * 
      * @return string
      */
-    public function getEnvironment()
-    {
+    public function getEnvironment() {
         return $this->_environment;
+    }
+
+    /**
+     * Retrieve resources path
+     * 
+     * @return string
+     */
+    public function getResourcesPath() {
+        return $this->_resourcesPath;
+    }
+
+    /**
+     * Set resources path
+     * 
+     * @param	resources path to set
+     * @return	void
+     */
+    public function setResourcesPath($resourcesPath) {
+        $this->_resourcesPath = $resourcesPath;
     }
 
     /**
@@ -76,10 +106,18 @@ class RestApplication
      * @param  array $options 
      * @return RestApplication
      */
-    public function setOptions(array $options)
-    {
+    public function setOptions(array $options) {
+	
         if (!empty($options['config'])) {
-            $options = $this->mergeOptions($options, $this->_loadConfig($options['config']));
+            if (is_array($options['config'])) {
+                $_options = array();
+                foreach ($options['config'] as $tmp) {
+                    $_options = $this->mergeOptions($_options, $this->_loadConfig($tmp));
+                }
+                $options = $this->mergeOptions($_options, $options);
+            } else {
+                $options = $this->mergeOptions($this->_loadConfig($options['config']), $options);
+            }
         }
         
         $this->_options = $options;
@@ -104,8 +142,7 @@ class RestApplication
      * 
      * @return array
      */
-    public function getOptions()
-    {
+    public function getOptions() {
         return $this->_options;
     }
 
@@ -115,8 +152,7 @@ class RestApplication
      * @param  string $key 
      * @return bool
      */
-    public function hasOption($key)
-    {
+    public function hasOption($key) {
         return in_array(strtolower($key), $this->_optionKeys);
     }
 
@@ -126,8 +162,8 @@ class RestApplication
      * @param  string $key 
      * @return mixed
      */
-    public function getOption($key)
-    {
+    public function getOption($key) {
+	
         if ($this->hasOption($key)) {
             $options = $this->getOptions();
             $options = array_change_key_case($options, CASE_LOWER);
@@ -143,8 +179,8 @@ class RestApplication
      * @param  mixed $array2 
      * @return array
      */
-    public function mergeOptions(array $array1, $array2 = null)
-    {
+    public function mergeOptions(array $array1, $array2 = null) {
+	
         if (is_array($array2)) {
             foreach ($array2 as $key => $val) {
                 if (is_array($array2[$key])) {
@@ -166,8 +202,8 @@ class RestApplication
      * @param  string $prefix Key prefix to prepend to array values (used to map . separated INI values)
      * @return RestApplication
      */
-    public function setPhpSettings(array $settings, $prefix = '')
-    {
+    public function setPhpSettings(array $settings, $prefix = '') {
+	
         foreach ($settings as $key => $value) {
             $key = empty($prefix) ? $key : $prefix . $key;
             if (is_scalar($value)) {
@@ -187,8 +223,8 @@ class RestApplication
      * @param  array $paths 
      * @return RestApplication
      */
-    public function setIncludePaths(array $paths)
-    {
+    public function setIncludePaths(array $paths) {
+	
         $path = implode(PATH_SEPARATOR, $paths);
         set_include_path($path . PATH_SEPARATOR . get_include_path());
         return $this;
@@ -201,8 +237,8 @@ class RestApplication
      * @throws RestException When invalid configuration file is provided 
      * @return array
      */
-    protected function _loadConfig($file)
-    {
+    protected function _loadConfig($file) {
+	
         $environment = $this->getEnvironment();
         $suffix      = strtolower(pathinfo($file, PATHINFO_EXTENSION));
         
@@ -214,7 +250,16 @@ class RestApplication
             case 'xml':
                 $config = new Zend_Config_Xml($file, $environment);
                 break;
-                
+
+            case 'php':
+            case 'inc':
+                $config = include $file;
+                if (!is_array($config)) {
+                    throw new RestException('Invalid configuration file provided; PHP file does not return array value');
+                }
+                return $config;
+                break;
+
             default:
                 throw new RestException('Invalid configuration file provided; unknown config type');
         }
@@ -222,13 +267,40 @@ class RestApplication
         return $config->toArray();
     }
 
+	/**
+	 * Load resources class found in the resources path
+	 */
+	protected function _loadResources() {
+		
+		$dir_iterator = new RecursiveDirectoryIterator($this->_resourcesPath);
+		$iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
+		foreach ($iterator as $file) {
+			try {
+				ResourceFile::load($file);
+			} catch (RestException $e) {
+				// Ignore non resource files
+			}
+		}
+	}
+
     /**
      * Run the application
      * 
      * @return void
      */
-    public function run()
-    {
+    public function run($request) {
+
+		if (!isset($this->_resourcesPath)) {
+			throw new RestException("Resources path is not defined");
+		}
+		
+		$this->_loadResources();
+		
+		$uri = $request->getUri();
+		$method = $request->getMethod();
+		
+		// Route the URI to the Resource
+		
         return new HttpResponse(HTTP_NOT_FOUND);
     }
 }

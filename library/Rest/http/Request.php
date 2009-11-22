@@ -1,8 +1,10 @@
 <?php
 
 /**
- * Http Request
- * @author Emmanuel Bouton
+ * HTTP request
+ * 
+ * @package	Rest.Http
+ * @author	Emmanuel Bouton
  */
 class HttpRequest {
 
@@ -17,8 +19,7 @@ class HttpRequest {
      * @param array $_SERVER variable
      * @return void
      */
-    function __construct ($server)
-    {
+    function __construct ($server) {
         $this->_server = $server;
     }
 
@@ -26,8 +27,7 @@ class HttpRequest {
      * Get the URI of the request
      * @return string
      */
-    public function getUri()
-    {
+    public function getUri() {
         return $this->_server["REQUEST_URI"];
     }
 
@@ -35,8 +35,7 @@ class HttpRequest {
      * Get the URI of the request
      * @return string
      */
-    public function getMethod()
-    {
+    public function getMethod() {
         return $this->_server["REQUEST_METHOD"];
     }
 }

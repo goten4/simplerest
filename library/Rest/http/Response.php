@@ -1,8 +1,10 @@
 <?php
 
 /**
- * Http Response
- * @author Emmanuel Bouton
+ * HTTP response
+ * 
+ * @package	Rest.Http
+ * @author	Emmanuel Bouton
  */
 class HttpResponse {
 

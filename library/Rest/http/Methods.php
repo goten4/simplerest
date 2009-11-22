@@ -1,5 +1,11 @@
 <?php
 
+/**
+* HTTP Methods
+* 
+* @package	Rest.Http
+* @author	Emmanuel Bouton
+*/
 class HttpMethods {
 	const OPTIONS = 'OPTIONS';
 	const GET = 'GET';

@@ -1,11 +1,16 @@
 #!/bin/sh
 case $1 in
-	tests)
-		phpunit --bootstrap tests/bootstrap.php tests $2
+	test)
+		if [ -z $2 ]
+		then
+			phpunit --bootstrap tests/bootstrap.php tests
+		else
+			phpunit --bootstrap tests/bootstrap.php $2
+		fi
 		;;
 	*)
 		echo "Usage: restapp COMMAND"
 		echo "COMMAND:"
-		echo "	tests		runs unit tests"
+		echo "	test [PATH_TO_TEST_FILE]	runs unit tests"
 		;;
 esac

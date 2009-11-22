@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<routes>
+	<route uriTemplate="/products0">
+		<class>Products0</class>
+		<classPath>Rest/Resources/Products.php</classPath>
+	</route>
+	<route uriTemplate="/products1">
+		<class>Products1</class>
+		<classPath>Rest/Resources/Products.php</classPath>
+	</route>
+	<route uriTemplate="/products2">
+		<class>Products2</class>
+		<classPath>Rest/Resources/Products.php</classPath>
+	</route>
+	<route uriTemplate="/products3">
+		<class>Products3</class>
+		<classPath>Rest/Resources/Products.php</classPath>
+	</route>
+	
+	<route uriTemplate="/products"		class="Products"	classPath="Products.php" />
+	<route uriTemplate="/product/:id"	class="Product"		classPath="Product.php" />
+	<route uriTemplate="/users"			class="Users"		classPath="Users.php" />
+	<route uriTemplate="/user/:id"		class="User"		classPath="User.php" />
+	<route uriTemplate="/catalog"		class="Catalog"		classPath="Catalog.php" />
+</routes>

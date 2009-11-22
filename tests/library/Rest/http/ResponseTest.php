@@ -1,10 +1,9 @@
 <?php
+require_once 'Rest/Http/Response.php';
+require_once 'Rest/Http/ResponseCodes.php';
 
-require_once 'Rest/http/Response.php';
-require_once 'Rest/http/ResponseCodes.php';
+class HttpResponseTest extends PHPUnit_Framework_TestCase {
 
-class HttpResponseTest extends PHPUnit_Framework_TestCase
-{
 	/** @test */
 	public function testHttpResponseWithResponseCodeAndContent() {
 	    $response = new HttpResponse(HTTP_OK, "Resource found");
