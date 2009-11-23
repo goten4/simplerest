@@ -9,56 +9,75 @@ class ResourceBaseTest extends PHPUnit_Framework_TestCase {
 		$this->resource = new TestResource();
 	}
 
-	private function _assert405($response) {
+	private function _assertHttpCode($httpCode, $response) {
 		$this->assertNotNull($response);
-		$this->assertEquals(HTTP_METHOD_NOT_ALLOWED, $response->getResponseCode());
+		$this->assertEquals($httpCode, $response->getResponseCode());
+	}
+
+	private function _assert405($response) {
+		$this->_assertHttpCode(HTTP_METHOD_NOT_ALLOWED, $response);
 	}
 
     /** @test */
+    public function callToBadMethodShouldReturn400() {
+        $request = new HttpRequest(array('REQUEST_METHOD' => 'BAD_METHOD'));
+		$response = $this->resource->callMethod($request);
+		$this->_assertHttpCode(HTTP_BAD_REQUEST, $response);
+    }
+
+    /** @test */
     public function optionsMethodShouldReturn405() {
-		$response = $this->resource->options();
+        $request = new HttpRequest(array('REQUEST_METHOD' => HttpMethods::OPTIONS));
+		$response = $this->resource->callMethod($request);
 		$this->_assert405($response);
     }
 
     /** @test */
     public function getMethodShouldReturn405() {
-		$response = $this->resource->get();
+        $request = new HttpRequest(array('REQUEST_METHOD' => HttpMethods::GET));
+		$response = $this->resource->callMethod($request);
 		$this->_assert405($response);
     }
 
     /** @test */
     public function headMethodShouldReturn405() {
-		$response = $this->resource->head();
+        $request = new HttpRequest(array('REQUEST_METHOD' => HttpMethods::HEAD));
+		$response = $this->resource->callMethod($request);
 		$this->_assert405($response);
     }
 
     /** @test */
     public function postMethodShouldReturn405() {
-		$response = $this->resource->post();
+        $request = new HttpRequest(array('REQUEST_METHOD' => HttpMethods::POST));
+		$response = $this->resource->callMethod($request);
 		$this->_assert405($response);
     }
 
     /** @test */
     public function putMethodShouldReturn405() {
-		$response = $this->resource->put();
+        $request = new HttpRequest(array('REQUEST_METHOD' => HttpMethods::PUT));
+		$response = $this->resource->callMethod($request);
 		$this->_assert405($response);
     }
 
     /** @test */
     public function deleteMethodShouldReturn405() {
-		$response = $this->resource->delete();
+        $request = new HttpRequest(array('REQUEST_METHOD' => HttpMethods::DELETE));
+		$response = $this->resource->callMethod($request);
 		$this->_assert405($response);
     }
 
     /** @test */
     public function traceMethodShouldReturn405() {
-		$response = $this->resource->trace();
+        $request = new HttpRequest(array('REQUEST_METHOD' => HttpMethods::TRACE));
+		$response = $this->resource->callMethod($request);
 		$this->_assert405($response);
     }
 
     /** @test */
     public function connectMethodShouldReturn405() {
-		$response = $this->resource->connect();
+        $request = new HttpRequest(array('REQUEST_METHOD' => HttpMethods::CONNECT));
+		$response = $this->resource->callMethod($request);
 		$this->_assert405($response);
     }
 }

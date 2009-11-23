@@ -4,11 +4,11 @@ require_once 'Rest/Http/ResponseCodes.php';
 require_once 'Rest/Resource/Base.php';
 
 /**
-* Users resource for testing
+* Products resource for testing
 */
-class ResourceUsers extends ResourceBase {
+class ResourceProducts extends ResourceBase {
 
 	public function get($request) {
-		return new HttpResponse(HTTP_OK, "Users list");
+		return new HttpResponse(HTTP_OK, "Products list");
 	}
 }

@@ -4,6 +4,7 @@ require_once 'Zend/Config/Xml.php';
 require_once 'Rest/Http/Request.php';
 require_once 'Rest/Http/Response.php';
 require_once 'Rest/Http/ResponseCodes.php';
+require_once 'Rest/Resource/Router.php';
 
 /**
  * Rest Application
@@ -267,22 +268,6 @@ class RestApplication {
         return $config->toArray();
     }
 
-	/**
-	 * Load resources class found in the resources path
-	 */
-	protected function _loadResources() {
-		
-		$dir_iterator = new RecursiveDirectoryIterator($this->_resourcesPath);
-		$iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
-		foreach ($iterator as $file) {
-			try {
-				ResourceFile::load($file);
-			} catch (RestException $e) {
-				// Ignore non resource files
-			}
-		}
-	}
-
     /**
      * Run the application
      * 
@@ -294,13 +279,12 @@ class RestApplication {
 			throw new RestException("Resources path is not defined");
 		}
 		
-		$this->_loadResources();
-		
 		// Route the URI to the Resource
-		// $router = new ResourceRouter();
-		// $resource = $router->route($request);
-		// $response = $resource->callMethod($request);
-		
-        return new HttpResponse(HTTP_NOT_FOUND);
+		$router = new ResourceRouter($this->_resourcesPath);
+		$resource = $router->route($request);
+		if (null == $resource)
+		    return new HttpResponse(HTTP_NOT_FOUND);
+		else
+		    return $resource->callMethod($request);
     }
 }

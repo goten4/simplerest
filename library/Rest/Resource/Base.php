@@ -12,36 +12,70 @@ abstract class ResourceBase {
 	private function _notAllowed() {
 		return new HttpResponse(HTTP_METHOD_NOT_ALLOWED);
 	}
+	
+	public function callMethod($request) {
+	
+	    switch ($request->getMethod()) {
+	        case HttpMethods::OPTIONS:
+	            $response = $this->options($request);
+	            break;
+	        case HttpMethods::GET:
+	            $response = $this->get($request);
+	            break;
+	        case HttpMethods::HEAD:
+	            $response = $this->head($request);
+	            break;
+	        case HttpMethods::POST:
+	            $response = $this->post($request);
+	            break;
+	        case HttpMethods::PUT:
+	            $response = $this->put($request);
+	            break;
+	        case HttpMethods::DELETE:
+	            $response = $this->delete($request);
+	            break;
+	        case HttpMethods::TRACE:
+	            $response = $this->trace($request);
+	            break;
+	        case HttpMethods::CONNECT:
+	            $response = $this->connect($request);
+	            break;
+	        default:
+	            $response = new HttpResponse(HTTP_BAD_REQUEST);
+	            break;
+	    }
+	    return $response;
+	}
 
-	public function options($params = array()) {
+	protected function options($request) {
 		return $this->_notAllowed();
 	}
 
-	public function get($params = array()) {
+	protected function get($request) {
 		return $this->_notAllowed();
 	}
 
-	public function head($params = array()) {
+	protected function head($request) {
 		return $this->_notAllowed();
 	}
 
-	public function post($params = array()) {
+	protected function post($request) {
 		return $this->_notAllowed();
 	}
 
-	public function put($params = array()) {
+	protected function put($request) {
 		return $this->_notAllowed();
 	}
 
-	public function delete($params = array()) {
+	protected function delete($request) {
 		return $this->_notAllowed();
 	}
 
-	public function trace($params = array()) {
+	protected function trace($request) {
 		return $this->_notAllowed();
 	}
 
-	public function connect($params = array()) {
+	protected function connect($request) {
 		return $this->_notAllowed();
 	}
 }

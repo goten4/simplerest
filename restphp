@@ -1,11 +1,22 @@
-#!/bin/sh
+#!/bin/bash
+
+function launchTests
+{
+	phpunit $2 --syntax-check --bootstrap tests/bootstrap.php $1
+}
+
+function launchAllTests
+{
+	launchTests tests/ $1
+}
+
 case $1 in
 	test)
 		if [ -z $2 ]
-		then
-			phpunit --bootstrap tests/bootstrap.php tests
+		    then
+			launchAllTests
 		else
-			phpunit --bootstrap tests/bootstrap.php $2
+			launchTests $2
 		fi
 		;;
 	*)
