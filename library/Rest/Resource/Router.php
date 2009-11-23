@@ -52,9 +52,15 @@ class ResourceRouter {
      * @return Resource
      */
     public function route($request) {
+	
         $uriElements = explode('/', $request->getUri());
-        $resourceClass = $this->_resourcesMap['resource' . strtolower($uriElements[1])];
-        return ( null == $resourceClass ? null : new $resourceClass() );
+
+		$key = 'resource' . strtolower($uriElements[1]);
+		if (array_key_exists($key, $this->_resourcesMap)) {
+	        $resourceClass = $this->_resourcesMap[$key];
+			return new $resourceClass();
+		}
+        return null;
     }
 }
 
