@@ -8,19 +8,19 @@ require_once 'Rest/Resource/Base.php';
 */
 class ResourceUser extends ResourceBase {
 
-	public function get($request) {
+	protected function get($request) {
 		return new HttpResponse(HTTP_OK, "Show user");
 	}
 
-	public function post($request) {
+	protected function post($request) {
 		return new HttpResponse(HTTP_OK, "Create user");
 	}
 
-	public function put($request) {
+	protected function put($request) {
 		return new HttpResponse(HTTP_OK, "Update user");
 	}
 
-	public function delete($request) {
+	protected function delete($request) {
 		return new HttpResponse(HTTP_OK, "Delete user");
 	}
 }

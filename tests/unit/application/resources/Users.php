@@ -8,7 +8,7 @@ require_once 'Rest/Resource/Base.php';
 */
 class ResourceUsers extends ResourceBase {
 
-	public function get($request) {
+	protected function get($request) {
 		return new HttpResponse(HTTP_OK, "Users list");
 	}
 }
