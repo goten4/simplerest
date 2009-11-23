@@ -1,4 +1,7 @@
 <?php
+require_once 'Rest/Http/Request.php';
+require_once 'Rest/Http/Methods.php';
+require_once 'Rest/Http/ResponseCodes.php';
 require_once 'Rest/Resource/Base.php';
 
 class TestResource extends ResourceBase {}

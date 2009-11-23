@@ -1,5 +1,6 @@
 <?php
 require_once 'Rest/Resource/File.php';
+require_once 'Rest/Exception.php';
 
 class ResourceFileTest extends PHPUnit_Framework_TestCase {
 
