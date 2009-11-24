@@ -1,5 +1,7 @@
 <?php
 require_once 'Rest/Http/Response.php';
+require_once 'Rest/Http/ResponseCodes.php';
+require_once 'Rest/Http/Methods.php';
 
 /**
 * Base class for resources. Override the methods you want to implement.

@@ -11,6 +11,9 @@ defined('LIBRARY_PATH')
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
+// Ensure library path is on include_path
+set_include_path(implode(PATH_SEPARATOR, array(LIBRARY_PATH, get_include_path())));
+
 /** RestApplication */
 require_once 'Rest/Application.php';
 require_once 'Rest/Http/Request.php';

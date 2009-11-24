@@ -245,7 +245,11 @@ class RestApplication {
         
         switch ($suffix) {
             case 'ini':
-                $config = new Zend_Config_Ini($file, $environment);
+                try {
+                    $config = new Zend_Config_Ini($file, $environment);
+                } catch (Zend_Config_Exception $e) {
+                    return array();
+                }
                 break;
                 
             case 'xml':
