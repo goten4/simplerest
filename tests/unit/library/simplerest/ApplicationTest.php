@@ -1,11 +1,11 @@
 <?php
 
-class RestApplicationTest extends PHPUnit_Framework_TestCase {
+class SimpleRestApplicationTest extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
         $this->includePath = get_include_path();
 		$this->request = new HttpRequest(array('REQUEST_URI' => "/users", 'REQUEST_METHOD' => HttpMethods::GET));
-        $this->application = new RestApplication('testing');
+        $this->application = new SimpleRestApplication('testing');
 		$this->application->setResourcesPath(TEST_BASE_PATH . '/application/resources');
         $this->iniOptions = array();
     }
@@ -27,7 +27,7 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
             'foo' => 'bar',
             'bar' => 'baz',
         );
-        $application = new RestApplication('testing', $options);
+        $application = new SimpleRestApplication('testing', $options);
         $this->assertEquals($options, $application->getOptions());
     }
 
@@ -42,7 +42,7 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
             'foo' => 'bar',
             'bar' => 'baz',
         );
-        $application = new RestApplication('testing', $options);
+        $application = new SimpleRestApplication('testing', $options);
         $this->assertTrue($application->hasOption('foo'));
     }
 
@@ -57,7 +57,7 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
             'foo' => 'bar',
             'bar' => 'baz',
         );
-        $application = new RestApplication('testing', $options);
+        $application = new SimpleRestApplication('testing', $options);
         $this->assertEquals($options['foo'], $application->getOption('foo'));
     }
 
@@ -106,36 +106,36 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
      * @expectedException RestException
      */
     public function passingInvalidOptionsArgumentToConstructorShouldRaiseException() {
-        $application = new RestApplication('testing', new stdClass());
+        $application = new SimpleRestApplication('testing', new stdClass());
     }
 
     /** @test */
     public function passingStringIniConfigPathOptionToConstructorShouldLoadOptions() {
-        $application = new RestApplication('testing', dirname(__FILE__) . '/config/appconfig.ini');
+        $application = new SimpleRestApplication('testing', dirname(__FILE__) . '/config/appconfig.ini');
         $this->assertTrue($application->hasOption('foo'));
     }
 
     /** @test */
     public function passingStringXmlConfigPathOptionToConstructorShouldLoadOptions() {
-        $application = new RestApplication('testing', dirname(__FILE__) . '/config/appconfig.xml');
+        $application = new SimpleRestApplication('testing', dirname(__FILE__) . '/config/appconfig.xml');
         $this->assertTrue($application->hasOption('foo'));
     }
 
 	/** @test */
     public function passingStringPhpConfigPathOptionToConstructorShouldLoadOptions() {
-        $application = new RestApplication('testing', dirname(__FILE__) . '/config/appconfig.php');
+        $application = new SimpleRestApplication('testing', dirname(__FILE__) . '/config/appconfig.php');
         $this->assertTrue($application->hasOption('foo'));
     }
 
 	/** @test */
     public function passingStringIncConfigPathOptionToConstructorShouldLoadOptions() {
-        $application = new RestApplication('testing', dirname(__FILE__) . '/config/appconfig.inc');
+        $application = new SimpleRestApplication('testing', dirname(__FILE__) . '/config/appconfig.inc');
         $this->assertTrue($application->hasOption('foo'));
     }
 
     /** @test */
     public function passingArrayOptionsWithConfigKeyShouldLoadOptions() {
-        $application = new RestApplication('testing', array('bar' => 'baz', 'config' => dirname(__FILE__) . '/config/appconfig.ini'));
+        $application = new SimpleRestApplication('testing', array('bar' => 'baz', 'config' => dirname(__FILE__) . '/config/appconfig.ini'));
         $this->assertTrue($application->hasOption('foo'));
         $this->assertTrue($application->hasOption('bar'));
     }
@@ -145,20 +145,20 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
      * @expectedException RestException
      */
     public function passingInvalidStringOptionToConstructorShouldRaiseException() {
-        $application = new RestApplication('testing', dirname(__FILE__) . '/config/appconfig');
+        $application = new SimpleRestApplication('testing', dirname(__FILE__) . '/config/appconfig');
     }
 
     /** @test */
     public function passingZendConfigToConstructorShouldLoadOptions() {
         $config = new Zend_Config_Ini(dirname(__FILE__) . '/config/appconfig.ini', 'testing');
-        $application = new RestApplication('testing', $config);
+        $application = new SimpleRestApplication('testing', $config);
         $this->assertTrue($application->hasOption('foo'));
     }
 
     /** @test */
     public function passingArrayOptionsToConstructorShouldLoadOptions() {
         $config = new Zend_Config_Ini(dirname(__FILE__) . '/config/appconfig.ini', 'testing');
-        $application = new RestApplication('testing', $config->toArray());
+        $application = new SimpleRestApplication('testing', $config->toArray());
         $this->assertTrue($application->hasOption('foo'));
     }
 
@@ -166,7 +166,7 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
     public function optionsShouldRetainOriginalCase() {
         $options = array(
             'pluginPaths' => array(
-                'RestApplication_Test_Path' => dirname(__FILE__),
+                'SimpleRestApplication_Test_Path' => dirname(__FILE__),
             ),
             'Resources' => array(
                 'foo' => array(),
@@ -183,7 +183,7 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
 
     /** @test */
     public function setOptionsShouldProperlyMergeTwoConfigFileOptions() {
-        $application = new RestApplication('production', dirname(__FILE__) . '/config/appconfig-1.ini');
+        $application = new SimpleRestApplication('production', dirname(__FILE__) . '/config/appconfig-1.ini');
         $options = $application->getOptions();
 		$keys = array_keys($options);
 		asort($keys);
@@ -192,7 +192,7 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
 
     /** @test */
     public function hasOptionShouldTreatOptionKeysAsCaseInsensitive() {
-        $application = new RestApplication('production', array(
+        $application = new SimpleRestApplication('production', array(
             'fooBar' => 'baz',
         ));
         $this->assertTrue($application->hasOption('FooBar'));
@@ -200,7 +200,7 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
 
     /** @test */
     public function getOptionShouldTreatOptionKeysAsCaseInsensitive() {
-        $application = new RestApplication('production', array(
+        $application = new SimpleRestApplication('production', array(
             'fooBar' => 'baz',
         ));
         $this->assertEquals('baz', $application->getOption('FooBar'));
@@ -208,7 +208,7 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
 
     /** @test */
     public function optionsCanHandleMultipleConfigFiles() {
-        $application = new RestApplication('testing', array(
+        $application = new SimpleRestApplication('testing', array(
             'config' => array(
                 dirname(__FILE__) . '/config/appconfig-3.ini',
                 dirname(__FILE__) . '/config/appconfig-4.ini'
@@ -231,7 +231,7 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
      * @expectedException RestException
      */
     public function runWhileResourcePathIsNotDefinedShouldRaiseException() {
-        $application = new RestApplication('testing');
+        $application = new SimpleRestApplication('testing');
 		$response = $application->run($this->request);
     }
 

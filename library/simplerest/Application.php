@@ -3,12 +3,12 @@ require_once 'Zend/Config/Ini.php';
 require_once 'Zend/Config/Xml.php';
 
 /**
- * Rest Application
+ * SimpleRest Application
  *
- * @package	Rest
+ * @package	SimpleRest
  * @author	Emmanuel Bouton
  */
-class RestApplication {
+class SimpleRestApplication {
 
     /**
      * Application environment

@@ -61,6 +61,6 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(class_exists('ResourceProducts'));
 		$this->assertTrue(class_exists('HttpMethods'));
 		$this->assertTrue(class_exists('ResourceBase'));
-		$this->assertTrue(class_exists('RestApplication'));
+		$this->assertTrue(class_exists('SimpleRestApplication'));
 	}
 }
