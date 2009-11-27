@@ -185,7 +185,9 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
     public function setOptionsShouldProperlyMergeTwoConfigFileOptions() {
         $application = new RestApplication('production', dirname(__FILE__) . '/config/appconfig-1.ini');
         $options = $application->getOptions();
-        $this->assertEquals(array('includePaths', 'config'), array_keys($options));
+		$keys = array_keys($options);
+		asort($keys);
+        $this->assertEquals(array('config', 'includePaths'), $keys);
     }
 
     /** @test */

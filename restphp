@@ -7,7 +7,7 @@ function launchTests
 
 function launchAutoloadsTests
 {
-	phpunit $1 --syntax-check --bootstrap tests/bootstrapnoautoload.php tests/unit/library/Rest/AutoloaderTest.php
+	phpunit $1 --syntax-check --bootstrap tests/bootstrapnoautoload.php tests/unit/library/simplerest/AutoloaderTest.php
 }
 
 function launchAllTests

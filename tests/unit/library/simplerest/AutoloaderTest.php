@@ -1,5 +1,5 @@
 <?php
-require_once 'Rest/Autoloader.php';
+require_once 'simplerest/Autoloader.php';
 
 /**
  * @runTestsInSeparateProcesses
