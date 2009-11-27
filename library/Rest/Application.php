@@ -1,10 +1,6 @@
 <?php
 require_once 'Zend/Config/Ini.php';
 require_once 'Zend/Config/Xml.php';
-require_once 'Rest/Http/Request.php';
-require_once 'Rest/Http/Response.php';
-require_once 'Rest/Http/ResponseCodes.php';
-require_once 'Rest/Resource/Router.php';
 
 /**
  * Rest Application
@@ -287,7 +283,7 @@ class RestApplication {
 		$router = new ResourceRouter($this->_resourcesPath);
 		$resource = $router->route($request);
 		if (null == $resource)
-		    return new HttpResponse(HTTP_NOT_FOUND);
+		    return new HttpResponse(HttpResponseCodes::HTTP_NOT_FOUND);
 		else
 		    return $resource->callMethod($request);
     }

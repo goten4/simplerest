@@ -1,10 +1,7 @@
 <?php
-require_once 'Rest/Http/Response.php';
-require_once 'Rest/Http/ResponseCodes.php';
-require_once 'Rest/Http/Methods.php';
 
 /**
-* Base class for resources. Override the methods you want to implement.
+* Base Class for resources. Override the methods you want to implement.
 *
 * @package	Resource
 * @author	Emmanuel Bouton
@@ -12,7 +9,7 @@ require_once 'Rest/Http/Methods.php';
 abstract class ResourceBase {
 	
 	private function _notAllowed() {
-		return new HttpResponse(HTTP_METHOD_NOT_ALLOWED);
+		return new HttpResponse(HttpResponseCodes::HTTP_METHOD_NOT_ALLOWED);
 	}
 	
 	public function callMethod($request) {
@@ -43,7 +40,7 @@ abstract class ResourceBase {
 	            $response = $this->connect($request);
 	            break;
 	        default:
-	            $response = new HttpResponse(HTTP_BAD_REQUEST);
+	            $response = new HttpResponse(HttpResponseCodes::HTTP_BAD_REQUEST);
 	            break;
 	    }
 	    return $response;

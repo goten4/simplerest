@@ -1,8 +1,4 @@
 <?php
-require_once 'Rest/Http/Request.php';
-require_once 'Rest/Http/Methods.php';
-require_once 'Rest/Http/ResponseCodes.php';
-require_once 'Rest/Resource/Base.php';
 
 class TestResource extends ResourceBase {}
 
@@ -18,14 +14,14 @@ class ResourceBaseTest extends PHPUnit_Framework_TestCase {
 	}
 
 	private function _assert405($response) {
-		$this->_assertHttpCode(HTTP_METHOD_NOT_ALLOWED, $response);
+		$this->_assertHttpCode(HttpResponseCodes::HTTP_METHOD_NOT_ALLOWED, $response);
 	}
 
     /** @test */
     public function callToBadMethodShouldReturn400() {
         $request = new HttpRequest(array('REQUEST_METHOD' => 'BAD_METHOD'));
 		$response = $this->resource->callMethod($request);
-		$this->_assertHttpCode(HTTP_BAD_REQUEST, $response);
+		$this->_assertHttpCode(HttpResponseCodes::HTTP_BAD_REQUEST, $response);
     }
 
     /** @test */

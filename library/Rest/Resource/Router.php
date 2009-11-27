@@ -1,8 +1,7 @@
 <?php
-require_once('Rest/Resource/File.php');
 
 /**
- * Router class for Resources
+ * Router Class for Resources
  *
  * @package Resource
  * @author  Emmanuel Bouton

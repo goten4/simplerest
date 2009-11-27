@@ -1,10 +1,4 @@
 <?php
-require_once 'Rest/Application.php';
-require_once 'Rest/Exception.php';
-require_once 'Rest/Http/Request.php';
-require_once 'Rest/Http/Response.php';
-require_once 'Rest/Http/Methods.php';
-require_once 'Rest/Http/ResponseCodes.php';
 
 class RestApplicationTest extends PHPUnit_Framework_TestCase {
 
@@ -227,7 +221,7 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
 	public function runWithUnknownUriInRequestShouldReturn404Error() {
 		$request = new HttpRequest(array('REQUEST_URI' => "/unknownUri", 'REQUEST_METHOD' => HttpMethods::GET));
 		$response = $this->application->run($request);
-		$this->assertEquals(HTTP_NOT_FOUND, $response->getResponseCode());
+		$this->assertEquals(HttpResponseCodes::HTTP_NOT_FOUND, $response->getResponseCode());
 	}
 
     /**
@@ -243,52 +237,52 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
 	public function runWithCorrectUriShouldReturn200() {
 	    $request = new HttpRequest(array('REQUEST_URI' => "/users", 'REQUEST_METHOD' => HttpMethods::GET));
 	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HTTP_OK, $response->getResponseCode());
+	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
 	 	$this->assertEquals("Users list", $response->getContent());
 
 	    $request = new HttpRequest(array('REQUEST_URI' => "/products", 'REQUEST_METHOD' => HttpMethods::GET));
 	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HTTP_OK, $response->getResponseCode());
+	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
 	 	$this->assertEquals("Products list", $response->getContent());
 
 	    $request = new HttpRequest(array('REQUEST_URI' => "/user", 'REQUEST_METHOD' => HttpMethods::GET));
 	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HTTP_OK, $response->getResponseCode());
+	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
 	 	$this->assertEquals("Show user", $response->getContent());
 
 	    $request = new HttpRequest(array('REQUEST_URI' => "/user", 'REQUEST_METHOD' => HttpMethods::POST));
 	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HTTP_OK, $response->getResponseCode());
+	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
 	 	$this->assertEquals("Create user", $response->getContent());
 
 	    $request = new HttpRequest(array('REQUEST_URI' => "/user", 'REQUEST_METHOD' => HttpMethods::PUT));
 	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HTTP_OK, $response->getResponseCode());
+	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
 	 	$this->assertEquals("Update user", $response->getContent());
 
 	    $request = new HttpRequest(array('REQUEST_URI' => "/user", 'REQUEST_METHOD' => HttpMethods::DELETE));
 	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HTTP_OK, $response->getResponseCode());
+	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
 	 	$this->assertEquals("Delete user", $response->getContent());
 
 	    $request = new HttpRequest(array('REQUEST_URI' => "/product", 'REQUEST_METHOD' => HttpMethods::GET));
 	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HTTP_OK, $response->getResponseCode());
+	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
 	 	$this->assertEquals("Show product", $response->getContent());
 
 	    $request = new HttpRequest(array('REQUEST_URI' => "/product", 'REQUEST_METHOD' => HttpMethods::POST));
 	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HTTP_OK, $response->getResponseCode());
+	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
 	 	$this->assertEquals("Create product", $response->getContent());
 
 	    $request = new HttpRequest(array('REQUEST_URI' => "/product", 'REQUEST_METHOD' => HttpMethods::PUT));
 	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HTTP_OK, $response->getResponseCode());
+	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
 	 	$this->assertEquals("Update product", $response->getContent());
 
 	    $request = new HttpRequest(array('REQUEST_URI' => "/product", 'REQUEST_METHOD' => HttpMethods::DELETE));
 	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HTTP_OK, $response->getResponseCode());
+	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
 	 	$this->assertEquals("Delete product", $response->getContent());
 	}
 }

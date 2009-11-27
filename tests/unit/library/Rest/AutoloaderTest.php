@@ -1,14 +1,23 @@
 <?php
 require_once 'Rest/Autoloader.php';
 
+/**
+ * @runTestsInSeparateProcesses
+ */
 class AutoloaderTest extends PHPUnit_Framework_TestCase {
 
-    /** @test */
+    /**
+	 * @test
+	 * @group autoload
+	 */
     public function getInstanceShouldReturnAutoloaderSingleton() {
 		$this->assertTrue(is_a(Autoloader::getInstance(),'Autoloader'));
     }
 
-	/** @test */
+    /**
+	 * @test
+	 * @group autoload
+	 */
 	public function initWithValidPathShouldLoadPhpFilesWithClassDefinition() {
 		$autoloader = Autoloader::init(TEST_BASE_PATH . '/application/resources');
 		$this->assertEquals(
@@ -29,12 +38,29 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase {
 		);
 	}
 	
-	/** @test */
+    /**
+	 * @test
+	 * @group autoload
+	 */
 	public function classesInAutoloaderBasePathShouldBeAutoloaded() {
-		$autoloader = Autoloader::init(TEST_BASE_PATH . '/application/resources');
+		$autoloader = Autoloader::init(TEST_BASE_PATH . '/application/classes');
+		$this->assertTrue(class_exists('Tools'));
+		$this->assertTrue(class_exists('Penguin'));
+	}
+	
+    /**
+	 * @test
+	 * @group autoload
+	 */
+	public function initWithArrayOfPathsShouldLoadPhpFilesOfAllThePaths() {
+		$paths = array(TEST_BASE_PATH, LIBRARY_PATH);
+		$autoloader = Autoloader::init($paths);
+		$this->assertTrue(class_exists('Tools'));
+		$this->assertTrue(class_exists('Penguin'));
 		$this->assertTrue(class_exists('ResourceUser'));
-		$this->assertTrue(class_exists('ResourceUsers'));
-		$this->assertTrue(class_exists('ResourceProduct'));
 		$this->assertTrue(class_exists('ResourceProducts'));
+		$this->assertTrue(class_exists('HttpMethods'));
+		$this->assertTrue(class_exists('ResourceBase'));
+		$this->assertTrue(class_exists('RestApplication'));
 	}
 }

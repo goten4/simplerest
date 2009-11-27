@@ -53,13 +53,24 @@ class Autoloader {
 	/**
 	* Init method
 	* 
-	* @param string
+	* @param string|array Path or Array of paths
 	* @return Autoloader
 	*/
-	public static function init($path) {
+	public static function init($paths) {
 		$autoloader = self::getInstance();
-		$autoloader->addBasePath($path);
+		if (is_array($paths)) {
+			foreach ($paths as $path) {
+				$autoloader->addBasePath($path);
+			}
+		} else {
+			$autoloader->addBasePath($paths);
+		}
+		//$autoloader->debug();
 		return $autoloader;
+	}
+	
+	public function debug() {
+		print_r($this->_filesMap);
 	}
 
     /**
@@ -82,6 +93,7 @@ class Autoloader {
 			}
 		}
 	}
+
     /**
      * Get the file path of the given class name
      * 

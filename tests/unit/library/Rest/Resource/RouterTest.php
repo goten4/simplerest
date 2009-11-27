@@ -1,8 +1,4 @@
 <?php
-require_once 'Rest/Exception.php';
-require_once 'Rest/Http/Request.php';
-require_once 'Rest/Http/Methods.php';
-require_once 'Rest/Resource/Router.php';
 
 class ResourceRouterTest extends PHPUnit_Framework_TestCase {
 

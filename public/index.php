@@ -14,11 +14,9 @@ defined('APPLICATION_ENV')
 // Ensure library path is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(LIBRARY_PATH, get_include_path())));
 
-/** RestApplication */
-require_once 'Rest/Application.php';
-require_once 'Rest/Http/Request.php';
-require_once 'Rest/Http/Response.php';
-require_once 'Rest/Http/ResponseCodes.php';
+// Autoload library and application files
+require_once 'Rest/Autoloader.php';
+Autoloader::init(array(LIBRARY_PATH, TEST_BASE_PATH));
 
 // Create application, request and run
 $application = new RestApplication(
