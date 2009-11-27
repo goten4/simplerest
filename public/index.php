@@ -15,8 +15,8 @@ defined('APPLICATION_ENV')
 set_include_path(implode(PATH_SEPARATOR, array(LIBRARY_PATH, get_include_path())));
 
 // Autoload library and application files
-require_once 'Rest/Autoloader.php';
-Autoloader::init(array(LIBRARY_PATH, TEST_BASE_PATH));
+require_once 'simplerest/Autoloader.php';
+Autoloader::init(array(LIBRARY_PATH, APPLICATION_PATH));
 
 // Create application, request and run
 $application = new SimpleRestApplication(
