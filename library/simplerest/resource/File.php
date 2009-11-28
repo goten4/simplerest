@@ -1,7 +1,10 @@
 <?php
 
 /**
+ * Class for loading resources files
  * 
+ * @package	simplerest.resource
+ * @author	Emmanuel Bouton
  */
 class ResourceFile {
 

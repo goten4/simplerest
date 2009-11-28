@@ -3,7 +3,7 @@
 /**
  * Router Class for Resources
  *
- * @package Resource
+ * @package simplerest.resource
  * @author  Emmanuel Bouton
  */
 class ResourceRouter {

@@ -3,7 +3,7 @@
 /**
 * HTTP Methods
 * 
-* @package	Rest.Http
+* @package	simplerest.http
 * @author	Emmanuel Bouton
 */
 class HttpMethods {

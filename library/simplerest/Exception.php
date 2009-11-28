@@ -3,7 +3,7 @@
 /**
  * Rest generic exception
  *
- * @package	Rest
+ * @package	simplerest
  * @author	Emmanuel Bouton
  */
 class RestException extends Exception {

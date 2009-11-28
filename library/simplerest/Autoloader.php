@@ -3,6 +3,7 @@
 /**
  * Autoloader singleton
  * 
+ * @package	simplerest
  * @author Emmanuel Bouton
  */
 class Autoloader {

@@ -3,7 +3,7 @@
 /**
  * HTTP response
  * 
- * @package	Rest.Http
+ * @package	simplerest.http
  * @author	Emmanuel Bouton
  */
 class HttpResponse {

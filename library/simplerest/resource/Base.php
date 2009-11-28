@@ -1,11 +1,11 @@
 <?php
 
 /**
-* Base Class for resources. Override the methods you want to implement.
-*
-* @package	Resource
-* @author	Emmanuel Bouton
-*/
+ * Base Class for resources. Override the methods you want to implement.
+ *
+ * @package	simplerest.resource
+ * @author	Emmanuel Bouton
+ */
 abstract class ResourceBase {
 	
 	private function _notAllowed() {

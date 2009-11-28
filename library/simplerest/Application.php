@@ -5,7 +5,7 @@ require_once 'Zend/Config/Xml.php';
 /**
  * SimpleRest Application
  *
- * @package	SimpleRest
+ * @package	simplerest
  * @author	Emmanuel Bouton
  */
 class SimpleRestApplication {
