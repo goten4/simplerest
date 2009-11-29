@@ -62,5 +62,17 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(class_exists('HttpMethods'));
 		$this->assertTrue(class_exists('ResourceBase'));
 		$this->assertTrue(class_exists('SimpleRestApplication'));
+		$this->assertTrue(interface_exists('Payment'));
+	}
+	
+    /**
+	 * @test
+	 * @group autoload
+	 */
+	public function resourcesInAutoloaderBasePathShouldBeRecognisedByAnnotation() {
+		$autoloader = Autoloader::init(TEST_BASE_PATH . '/application/resources');
+		$resources = $autoloader->getResources();
+		asort($resources);
+		$this->assertSame(array('ResourceCategories', 'ResourceProduct', 'ResourceUser', 'ResourceUsers'), $resources);
 	}
 }

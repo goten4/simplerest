@@ -1,8 +1,9 @@
 <?php
 
 /**
-* Users resource for testing
-*/
+ * Users resource for testing
+ * @resource
+ */
 class ResourceUsers extends ResourceBase {
 
 	protected function get($request) {

@@ -21,6 +21,9 @@ class Autoloader {
     /** Map class names to files */
     protected $_filesMap = array();
 
+    /** List of found resources */
+    protected $_resources = array();
+
 
 	/**
 	* Constructor
@@ -60,9 +63,7 @@ class Autoloader {
 	public static function init($paths) {
 		$autoloader = self::getInstance();
 		if (is_array($paths)) {
-			foreach ($paths as $path) {
-				$autoloader->addBasePath($path);
-			}
+			$autoloader->addBasePaths($paths);
 		} else {
 			$autoloader->addBasePath($paths);
 		}
@@ -72,6 +73,18 @@ class Autoloader {
 	
 	public function debug() {
 		print_r($this->_filesMap);
+	}
+
+    /**
+     * Call {@link addBasePath($path)} for all paths of the given array
+     * 
+     * @param array $paths
+     * @return void
+     */
+	public function addBasePaths($paths) {
+		foreach ($paths as $path) {
+			$this->addBasePath($path);
+		}
 	}
 
     /**
@@ -87,9 +100,13 @@ class Autoloader {
 			$extension = pathinfo($file, PATHINFO_EXTENSION);
 			if ("php" == $extension || "inc" == $extension) {
                 $fileContent = file_get_contents($file);
-                $classFound = preg_match('/class (?<name>\w+)/', $fileContent, $matches);
-				if ($classFound > 0) {
-					$this->_filesMap[strtolower($matches['name'])] = $file->getRealpath();
+                $classFound = preg_match('/(?<head>(\r?\n.*)*)\r?\n(abstract)?\s*(class|interface)\s+(?<name>\w+)/', $fileContent, $matches);
+				if ($classFound) {
+					$className = $matches['name'];
+					$this->_filesMap[strtolower($className)] = $file->getRealpath();
+					if (strpos($matches['head'], "* @resource")) {
+						$this->_resources[] = $className;
+					}
 				}
 			}
 		}
@@ -104,6 +121,15 @@ class Autoloader {
 		$key = strtolower($className);
         return ( array_key_exists($key, $this->_filesMap) ? $this->_filesMap[$key] : null );
     }
+
+	/**
+	 * Get the resources list found in the browsed directories
+	 * 
+	 * @return array
+	 */
+	public function getResources() {
+		return $this->_resources;
+	}
 }
 
 function __autoload($className) {

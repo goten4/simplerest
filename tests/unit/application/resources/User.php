@@ -1,23 +1,38 @@
 <?php
 
 /**
-* User resource for testing
-*/
+ * @resource
+ * @uriPrefix /user
+ */
 class ResourceUser extends ResourceBase {
 
-	protected function get($request) {
+	/**
+	 * @get
+	 * @uri :id
+	 */
+	public function get($id) {
 		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Show user");
 	}
 
-	protected function post($request) {
+	/**
+	 * @post
+	 */
+	public function post($data) {
 		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Create user");
 	}
 
-	protected function put($request) {
+	/**
+	 * @put
+	 */
+	public function put($data) {
 		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Update user");
 	}
 
-	protected function delete($request) {
+	/**
+	 * @delete
+	 * @uri :id
+	 */
+	public function delete($id) {
 		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Delete user");
 	}
 }

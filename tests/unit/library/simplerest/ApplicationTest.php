@@ -5,7 +5,7 @@ class SimpleRestApplicationTest extends PHPUnit_Framework_TestCase {
     public function setUp() {
         $this->includePath = get_include_path();
 		$this->request = new HttpRequest(array('REQUEST_URI' => "/users", 'REQUEST_METHOD' => HttpMethods::GET));
-        $this->application = new SimpleRestApplication('testing');
+        $this->application = new SimpleRestApplication('testing', TEST_BASE_PATH . '/application/configuration/application.ini');
 		$this->application->setResourcesPath(TEST_BASE_PATH . '/application/resources');
         $this->iniOptions = array();
     }
@@ -19,6 +19,7 @@ class SimpleRestApplicationTest extends PHPUnit_Framework_TestCase {
     /** @test */
     public function constructorShouldSetsEnvironment() {
         $this->assertEquals('testing', $this->application->getEnvironment());
+        $this->assertTrue($this->application->hasOption('monoptionamoi'));
     }
 
     /** @test */
@@ -29,6 +30,18 @@ class SimpleRestApplicationTest extends PHPUnit_Framework_TestCase {
         );
         $application = new SimpleRestApplication('testing', $options);
         $this->assertEquals($options, $application->getOptions());
+    }
+
+    /** @test */
+    public function constructorShouldAutoloadPathsSpecifiedInTheConfigurationAndFindTheResources() {
+		$this->assertTrue(class_exists('Tools'));
+		$this->assertTrue(class_exists('Penguin'));
+		$this->assertTrue(class_exists('ResourceUser'));
+		$this->assertTrue(class_exists('ResourceProducts'));
+		$this->assertTrue(class_exists('HttpMethods'));
+		$this->assertTrue(class_exists('ResourceBase'));
+		$this->assertTrue(class_exists('SimpleRestApplication'));
+		$this->assertTrue(interface_exists('Payment'));
     }
 
     /** @test */

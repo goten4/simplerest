@@ -2,7 +2,7 @@
 
 /**
 * Products resource for testing
-*/
+**/
 class ResourceProducts extends ResourceBase {
 
 	protected function get($request) {

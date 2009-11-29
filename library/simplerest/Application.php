@@ -1,6 +1,7 @@
 <?php
 require_once 'Zend/Config/Ini.php';
 require_once 'Zend/Config/Xml.php';
+require_once 'simplerest/Autoloader.php';
 
 /**
  * SimpleRest Application
@@ -38,6 +39,13 @@ class SimpleRestApplication {
 	 */
 	protected $_resourcesPath;
 
+	/**
+	 * Resources list
+	 * 
+	 * @var array
+	 */
+	protected $_resources;
+
 
     /**
      * Constructor
@@ -53,7 +61,8 @@ class SimpleRestApplication {
     public function __construct($environment, $options = null) {
 	
         $this->_environment = (string) $environment;
-
+		$autoloader = Autoloader::init(LIBRARY_PATH);
+		
         if (null !== $options) {
             if (is_string($options)) {
                 $options = $this->_loadConfig($options);
@@ -64,6 +73,10 @@ class SimpleRestApplication {
             elseif (!is_array($options)) {
                 throw new RestException('Invalid options provided; must be location of config file, a config object, or an array');
             }
+
+	        if (!empty($options['autoloader'])) {
+				$autoloader->addBasePaths($options['autoloader']);
+	        }
 
             $this->setOptions($options);
         }

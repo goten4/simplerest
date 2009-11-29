@@ -17,10 +17,16 @@ function launchAllTests
 }
 
 case $1 in
+	test:autoloader)
+		launchAutoloadsTests
+		;;
+	test:all)
+		launchAllTests
+		;;
 	test)
 		if [ -z $2 ]
 		    then
-			launchAllTests
+			launchTests tests/
 		else
 			launchTests $2
 		fi
