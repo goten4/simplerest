@@ -238,7 +238,7 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
     
     protected function _assertResponse($response, $expectedCode, $expectedContent = null) {
         $this->assertEquals($expectedCode, $response->getResponseCode());
-        if (null != $content) {
+        if (null != $expectedContent) {
             $this->assertEquals($expectedContent, $response->getContent());
         }
     }
