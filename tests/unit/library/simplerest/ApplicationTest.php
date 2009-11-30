@@ -19,7 +19,6 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
     /** @test */
     public function constructorShouldSetsEnvironment() {
         $this->assertEquals('testing', $this->application->getEnvironment());
-        $this->assertTrue($this->application->hasOption('monoptionamoi'));
     }
 
     /** @test */

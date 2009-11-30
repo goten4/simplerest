@@ -7,7 +7,7 @@ class ProductResource extends Resource {
 	 * @get
 	 * @uri /product/:id
 	 */
-	public function get($id) {
+	protected function get($id) {
 		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Show product");
 	}
 
@@ -15,7 +15,7 @@ class ProductResource extends Resource {
 	 * @post
 	 * @uri /product
 	 */
-	public function post($data) {
+	protected function post($data) {
 		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Create product");
 	}
 
@@ -23,7 +23,7 @@ class ProductResource extends Resource {
 	 * @put
 	 * @uri /product
 	 */
-	public function put($data) {
+	protected function put($data) {
 		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Update product");
 	}
 
@@ -31,7 +31,7 @@ class ProductResource extends Resource {
 	 * @delete
 	 * @uri /product/:id
 	 */
-	public function delete($id) {
+	protected function delete($id) {
 		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Delete product");
 	}
 }

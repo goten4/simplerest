@@ -12,18 +12,14 @@ defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
 // Ensure library path is on include_path
-set_include_path(implode(PATH_SEPARATOR, array(LIBRARY_PATH, get_include_path())));
-
-// Autoload library and application files
-require_once 'simplerest/Autoloader.php';
-Autoloader::init(array(LIBRARY_PATH, APPLICATION_PATH));
+set_include_path(implode(PATH_SEPARATOR, array(APPLICATION_PATH, LIBRARY_PATH, get_include_path())));
 
 // Create application, request and run
+require 'simplerest/RestApplication.php';
 $application = new RestApplication(
     APPLICATION_ENV, 
     APPLICATION_PATH . '/configuration/application.ini'
 );
-$application->setResourcesPath(APPLICATION_PATH . '/resources');
 $request = new HttpRequest($_SERVER);
 $response = $application->run($request);
 header(

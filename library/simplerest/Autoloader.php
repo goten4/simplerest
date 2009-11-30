@@ -67,7 +67,6 @@ class Autoloader {
 		} else {
 			$autoloader->addBasePath($paths);
 		}
-		//$autoloader->debug();
 		return $autoloader;
 	}
 	

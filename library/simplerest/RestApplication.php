@@ -265,6 +265,7 @@ class RestApplication {
         $resources = $this->_autoloader->getResources();
 		$router = new ResourceRouter($resources);
 		$resource = $router->route($request);
+		//$router->debug();
 		if (null == $resource)
 		    return new HttpResponse(HttpResponseCodes::HTTP_NOT_FOUND);
 		else
