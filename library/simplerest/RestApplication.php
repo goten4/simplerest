@@ -51,8 +51,11 @@ class RestApplication {
      * @throws RestException When invalid options are provided
      * @return void
      */
-    public function __construct($environment, $options = null) {
-	
+    public function __construct($environment, $options = null)
+    {
+	    if (!defined('LIBRARY_PATH')) {
+	        throw new RestException('LIBRARY_PATH must be defined');
+	    }
         $this->_environment = (string) $environment;
 		$this->_autoloader = Autoloader::init(LIBRARY_PATH);
 		
