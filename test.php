@@ -1,3 +1,5 @@
+#!/usr/bin/php
+
 <?php
 // Define path to library directory
 defined('LIBRARY_PATH')
@@ -12,13 +14,21 @@ set_include_path(implode(PATH_SEPARATOR, array(LIBRARY_PATH, get_include_path())
 require_once 'simplerest/Autoloader.php';
 Autoloader::init(array(LIBRARY_PATH, APPLICATION_PATH));
 
-$fileContent = file_get_contents("tests/unit/application/resources/Product.php");
-$classFound = preg_match('/(?<head>(\r?\n.*)*)\r?\n(abstract)?[[:blank:]]*(class|interface) (?<name>\w+)/', $fileContent, $matches);
-if ($classFound) {
-	echo "Classe trouvée : " . $matches['name'] . "\n";
-	if (strpos($matches['head'], "* @resource")) {
-		echo " => C'est une resource\n";
-	}
+$str = "BaseResource";
+$isPrefixedByResource = preg_match('/(?<baseName>\w+)(Resource)?/', $str, $matches);
+if ($isPrefixedByResource) {
+	echo "Base trouvée : " . $matches['baseName'] . "\n";
 } else {
-	echo "Classe non trouvée\n";
+	echo "Base non trouvée\n";
 }
+
+#$fileContent = file_get_contents("tests/unit/application/resources/Product.php");
+#$classFound = preg_match('/(?<head>(\r?\n.*)*)\r?\n(abstract)?[[:blank:]]*(class|interface) (?<name>\w+)/', $fileContent, $matches);
+#if ($classFound) {
+#	echo "Classe trouvée : " . $matches['name'] . "\n";
+#	if (strpos($matches['head'], "* @resource")) {
+#		echo " => C'est une resource\n";
+#	}
+#} else {
+#	echo "Classe non trouvée\n";
+#}

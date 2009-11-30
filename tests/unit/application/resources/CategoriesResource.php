@@ -3,13 +3,13 @@
 /**
  * Categories resource for testing
  * @resource
+ * @uri /categories
  */
-class ResourceCategories extends Resource
+class CategoriesResource extends Resource
 {
 	/**
 	 * @get
 	 * @uri index
-	 * @uri /categories
 	 * @uri /categories-list
 	 * @uri /liste-des-categories
 	 */

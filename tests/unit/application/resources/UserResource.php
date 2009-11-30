@@ -2,9 +2,9 @@
 
 /**
  * @resource
- * @uriPrefix /user
+ * @uri /user
  */
-class ResourceUser extends Resource {
+class UserResource extends Resource {
 
 	/**
 	 * @get

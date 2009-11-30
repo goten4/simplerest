@@ -36,8 +36,8 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
     public function constructorShouldAutoloadPathsSpecifiedInTheConfigurationAndFindTheClasses() {
 		$this->assertTrue(class_exists('Tools'));
 		$this->assertTrue(class_exists('Penguin'));
-		$this->assertTrue(class_exists('ResourceUser'));
-		$this->assertTrue(class_exists('ResourceProducts'));
+		$this->assertTrue(class_exists('UserResource'));
+		$this->assertTrue(class_exists('ProductsResource'));
 		$this->assertTrue(class_exists('HttpMethods'));
 		$this->assertTrue(class_exists('Resource'));
 		$this->assertTrue(class_exists('RestApplication'));

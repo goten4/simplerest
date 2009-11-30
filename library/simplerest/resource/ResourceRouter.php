@@ -12,6 +12,11 @@ class ResourceRouter
      */
     protected $_uriMap = array();
 
+    /**
+     * Constructor
+     * 
+     * @param array $resources Array of all referenced resources class names
+     */
 	function __construct($resources)
 	{
 		foreach ($resources as $resource) {
@@ -19,45 +24,64 @@ class ResourceRouter
 		}
 	}
 	
+	public function debug($msg = "")
+	{
+	    echo "$msg\n";
+	    print_r($this->_uriMap);
+	}
+	
+	protected function _addToUriMap($httpMethod, $map)
+	{
+        if (array_key_exists($httpMethod, $this->_uriMap)) {
+            $this->_uriMap[$httpMethod] = array_merge($this->_uriMap[$httpMethod], $map);
+        } else {
+            $this->_uriMap[$httpMethod] = $map;
+        }
+	}
+
 	protected function _generateMap($resource)
 	{		
 		if (!class_exists($resource)) {
 			return;
 		}
 
+        $mapFromClassDocComment = $this->_getUriMapFromClassDocComment($resource);
+        
 		$reflection = new ReflectionClass('HttpMethods');
 		$httpMethods = $reflection->getConstants();
 		foreach ($httpMethods as $httpMethod) {
-            $this->_generateMapForHttpMethod($resource, $httpMethod);
+            $mapFromMethodDocComment = $this->_getUriMapFromMethodDocComment($resource, $httpMethod);
+            $this->_addToUriMap($httpMethod, $mapFromClassDocComment);
+            $this->_addToUriMap($httpMethod, $mapFromMethodDocComment);
 		}
 	}
 	
-	protected function _generateMapForHttpMethod($resource, $httpMethod)
+	protected function _getUriMapFromClassDocComment($resource)
+	{
+	    $reflection = new ReflectionClass($resource);
+		return $this->_getUriMapFromDocComment($resource, $reflection->getDocComment());
+	}
+	
+	protected function _getUriMapFromMethodDocComment($resource, $httpMethod)
 	{
 		$methodName = strtolower($httpMethod);
-
         $reflection = new ReflectionClass($resource);
 		$method = $reflection->getMethod($methodName);
-		$docComment = $method->getDocComment();
+		return $this->_getUriMapFromDocComment($resource, $method->getDocComment());
+	}
+	
+	protected function _getUriMapFromDocComment($resource, $docComment)
+	{
+	    $map = array();
 		if (preg_match_all('/@uri\s+(?<uri>\/\S*)/s', $docComment, $matches, PREG_SET_ORDER)) {
 			foreach ($matches as $match) {
 				$uri = $this->_stripSlash($match['uri']);
-				$this->_uriMap[$httpMethod][$uri] = $resource;
+				$map[$uri] = $resource;
 			}
 		}
-		else {
-			$defaultUri = $this->_getDefaultUri($resource);
-			$this->_uriMap[$httpMethod][$defaultUri] = $resource;
-		}
+		return $map;
 	}
 	
-	protected function _getDefaultUri($resource)
-	{
-		$isPrefixedByResource = preg_match('/(Resource)?(?<baseName>\w+)/', $resource, $matches);
-		$baseName = ( $isPrefixedByResource ? $matches['baseName'] : $resource );
-		return '/' . strtolower($baseName);
-	}
-
 	protected function _stripSlash($uri)
 	{
 		if ($uri[strlen($uri) - 1] == '/') {
@@ -66,6 +90,11 @@ class ResourceRouter
 		return $uri;
 	}
 	
+	/**
+	 * Route the request to the corresponding resource
+	 * 
+	 * @return a Resource object or null if not found
+	 */
 	public function route($request)
 	{
 		$uri = $this->_stripSlash($request->getUri());

@@ -21,20 +21,20 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase {
 	public function initWithValidPathShouldLoadPhpFilesWithClassDefinition() {
 		$autoloader = Autoloader::init(TEST_BASE_PATH . '/application/resources');
 		$this->assertEquals(
-			TEST_BASE_PATH . '/application/resources/Product.php',
-			$autoloader->getFilePath('ResourceProduct')
+			TEST_BASE_PATH . '/application/resources/ProductResource.php',
+			$autoloader->getFilePath('ProductResource')
 		);
 		$this->assertEquals(
-			TEST_BASE_PATH . '/application/resources/Products.php',
-			$autoloader->getFilePath('ResourceProducts')
+			TEST_BASE_PATH . '/application/resources/ProductsResource.php',
+			$autoloader->getFilePath('ProductsResource')
 		);
 		$this->assertEquals(
-			TEST_BASE_PATH . '/application/resources/User.php',
-			$autoloader->getFilePath('ResourceUser')
+			TEST_BASE_PATH . '/application/resources/UserResource.php',
+			$autoloader->getFilePath('UserResource')
 		);
 		$this->assertEquals(
-			TEST_BASE_PATH . '/application/resources/Users.php',
-			$autoloader->getFilePath('ResourceUsers')
+			TEST_BASE_PATH . '/application/resources/UsersResource.php',
+			$autoloader->getFilePath('UsersResource')
 		);
 	}
 	
@@ -57,8 +57,8 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase {
 		$autoloader = Autoloader::init($paths);
 		$this->assertTrue(class_exists('Tools'));
 		$this->assertTrue(class_exists('Penguin'));
-		$this->assertTrue(class_exists('ResourceUser'));
-		$this->assertTrue(class_exists('ResourceProducts'));
+		$this->assertTrue(class_exists('UserResource'));
+		$this->assertTrue(class_exists('ProductsResource'));
 		$this->assertTrue(class_exists('HttpMethods'));
 		$this->assertTrue(class_exists('Resource'));
 		$this->assertTrue(class_exists('RestApplication'));
@@ -73,6 +73,6 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase {
 		$autoloader = Autoloader::init(TEST_BASE_PATH . '/application/resources');
 		$resources = $autoloader->getResources();
 		sort($resources);
-		$this->assertSame(array('ResourceCategories', 'ResourceProduct', 'ResourceUser', 'ResourceUsers'), $resources);
+		$this->assertSame(array('CategoriesResource', 'ProductResource', 'UserResource', 'UsersResource'), $resources);
 	}
 }
