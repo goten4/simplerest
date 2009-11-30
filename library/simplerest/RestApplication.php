@@ -4,12 +4,12 @@ require_once 'Zend/Config/Xml.php';
 require_once 'simplerest/Autoloader.php';
 
 /**
- * SimpleRest Application
+ * Rest Application
  *
  * @package	simplerest
  * @author	Emmanuel Bouton
  */
-class SimpleRestApplication {
+class RestApplication {
 
     /**
      * Application environment
@@ -33,18 +33,11 @@ class SimpleRestApplication {
     protected $_options = array();
 
 	/**
-	 * Resources base path
+	 * The autoloader instance
 	 * 
-	 * @var string
+	 * @var Autoloader
 	 */
-	protected $_resourcesPath;
-
-	/**
-	 * Resources list
-	 * 
-	 * @var array
-	 */
-	protected $_resources;
+	protected $_autoloader;
 
 
     /**
@@ -61,7 +54,7 @@ class SimpleRestApplication {
     public function __construct($environment, $options = null) {
 	
         $this->_environment = (string) $environment;
-		$autoloader = Autoloader::init(LIBRARY_PATH);
+		$this->_autoloader = Autoloader::init(LIBRARY_PATH);
 		
         if (null !== $options) {
             if (is_string($options)) {
@@ -75,7 +68,7 @@ class SimpleRestApplication {
             }
 
 	        if (!empty($options['autoloader'])) {
-				$autoloader->addBasePaths($options['autoloader']);
+				$this->_autoloader->addBasePaths($options['autoloader']);
 	        }
 
             $this->setOptions($options);
@@ -89,25 +82,6 @@ class SimpleRestApplication {
      */
     public function getEnvironment() {
         return $this->_environment;
-    }
-
-    /**
-     * Retrieve resources path
-     * 
-     * @return string
-     */
-    public function getResourcesPath() {
-        return $this->_resourcesPath;
-    }
-
-    /**
-     * Set resources path
-     * 
-     * @param	resources path to set
-     * @return	void
-     */
-    public function setResourcesPath($resourcesPath) {
-        $this->_resourcesPath = $resourcesPath;
     }
 
     /**
@@ -286,14 +260,10 @@ class SimpleRestApplication {
      * 
      * @return void
      */
-    public function run($request) {
-
-		if (!isset($this->_resourcesPath)) {
-			throw new RestException("Resources path is not defined");
-		}
-		
-		// Route the URI to the Resource
-		$router = new ResourceRouter($this->_resourcesPath);
+    public function run($request)
+    {
+        $resources = $this->_autoloader->getResources();
+		$router = new ResourceRouter($resources);
 		$resource = $router->route($request);
 		if (null == $resource)
 		    return new HttpResponse(HttpResponseCodes::HTTP_NOT_FOUND);

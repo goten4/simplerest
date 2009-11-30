@@ -1,8 +1,8 @@
 <?php
 
-class TestResource extends ResourceBase {}
+class TestResource extends Resource {}
 
-class ResourceBaseTest extends PHPUnit_Framework_TestCase {
+class ResourceTest extends PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		$this->resource = new TestResource();

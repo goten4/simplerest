@@ -1,12 +1,12 @@
 <?php
 
-class SimpleRestApplicationTest extends PHPUnit_Framework_TestCase {
+class RestApplicationTest extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
         $this->includePath = get_include_path();
 		$this->request = new HttpRequest(array('REQUEST_URI' => "/users", 'REQUEST_METHOD' => HttpMethods::GET));
-        $this->application = new SimpleRestApplication('testing', TEST_BASE_PATH . '/application/configuration/application.ini');
-		$this->application->setResourcesPath(TEST_BASE_PATH . '/application/resources');
+        $this->application = new RestApplication('testing', TEST_BASE_PATH . '/application/configuration/application.ini');
+		//$this->application->setResourcesPath(TEST_BASE_PATH . '/application/resources');
         $this->iniOptions = array();
     }
 
@@ -28,19 +28,19 @@ class SimpleRestApplicationTest extends PHPUnit_Framework_TestCase {
             'foo' => 'bar',
             'bar' => 'baz',
         );
-        $application = new SimpleRestApplication('testing', $options);
+        $application = new RestApplication('testing', $options);
         $this->assertEquals($options, $application->getOptions());
     }
 
     /** @test */
-    public function constructorShouldAutoloadPathsSpecifiedInTheConfigurationAndFindTheResources() {
+    public function constructorShouldAutoloadPathsSpecifiedInTheConfigurationAndFindTheClasses() {
 		$this->assertTrue(class_exists('Tools'));
 		$this->assertTrue(class_exists('Penguin'));
 		$this->assertTrue(class_exists('ResourceUser'));
 		$this->assertTrue(class_exists('ResourceProducts'));
 		$this->assertTrue(class_exists('HttpMethods'));
-		$this->assertTrue(class_exists('ResourceBase'));
-		$this->assertTrue(class_exists('SimpleRestApplication'));
+		$this->assertTrue(class_exists('Resource'));
+		$this->assertTrue(class_exists('RestApplication'));
 		$this->assertTrue(interface_exists('Payment'));
     }
 
@@ -55,7 +55,7 @@ class SimpleRestApplicationTest extends PHPUnit_Framework_TestCase {
             'foo' => 'bar',
             'bar' => 'baz',
         );
-        $application = new SimpleRestApplication('testing', $options);
+        $application = new RestApplication('testing', $options);
         $this->assertTrue($application->hasOption('foo'));
     }
 
@@ -70,7 +70,7 @@ class SimpleRestApplicationTest extends PHPUnit_Framework_TestCase {
             'foo' => 'bar',
             'bar' => 'baz',
         );
-        $application = new SimpleRestApplication('testing', $options);
+        $application = new RestApplication('testing', $options);
         $this->assertEquals($options['foo'], $application->getOption('foo'));
     }
 
@@ -119,36 +119,36 @@ class SimpleRestApplicationTest extends PHPUnit_Framework_TestCase {
      * @expectedException RestException
      */
     public function passingInvalidOptionsArgumentToConstructorShouldRaiseException() {
-        $application = new SimpleRestApplication('testing', new stdClass());
+        $application = new RestApplication('testing', new stdClass());
     }
 
     /** @test */
     public function passingStringIniConfigPathOptionToConstructorShouldLoadOptions() {
-        $application = new SimpleRestApplication('testing', dirname(__FILE__) . '/config/appconfig.ini');
+        $application = new RestApplication('testing', dirname(__FILE__) . '/config/appconfig.ini');
         $this->assertTrue($application->hasOption('foo'));
     }
 
     /** @test */
     public function passingStringXmlConfigPathOptionToConstructorShouldLoadOptions() {
-        $application = new SimpleRestApplication('testing', dirname(__FILE__) . '/config/appconfig.xml');
+        $application = new RestApplication('testing', dirname(__FILE__) . '/config/appconfig.xml');
         $this->assertTrue($application->hasOption('foo'));
     }
 
 	/** @test */
     public function passingStringPhpConfigPathOptionToConstructorShouldLoadOptions() {
-        $application = new SimpleRestApplication('testing', dirname(__FILE__) . '/config/appconfig.php');
+        $application = new RestApplication('testing', dirname(__FILE__) . '/config/appconfig.php');
         $this->assertTrue($application->hasOption('foo'));
     }
 
 	/** @test */
     public function passingStringIncConfigPathOptionToConstructorShouldLoadOptions() {
-        $application = new SimpleRestApplication('testing', dirname(__FILE__) . '/config/appconfig.inc');
+        $application = new RestApplication('testing', dirname(__FILE__) . '/config/appconfig.inc');
         $this->assertTrue($application->hasOption('foo'));
     }
 
     /** @test */
     public function passingArrayOptionsWithConfigKeyShouldLoadOptions() {
-        $application = new SimpleRestApplication('testing', array('bar' => 'baz', 'config' => dirname(__FILE__) . '/config/appconfig.ini'));
+        $application = new RestApplication('testing', array('bar' => 'baz', 'config' => dirname(__FILE__) . '/config/appconfig.ini'));
         $this->assertTrue($application->hasOption('foo'));
         $this->assertTrue($application->hasOption('bar'));
     }
@@ -158,20 +158,20 @@ class SimpleRestApplicationTest extends PHPUnit_Framework_TestCase {
      * @expectedException RestException
      */
     public function passingInvalidStringOptionToConstructorShouldRaiseException() {
-        $application = new SimpleRestApplication('testing', dirname(__FILE__) . '/config/appconfig');
+        $application = new RestApplication('testing', dirname(__FILE__) . '/config/appconfig');
     }
 
     /** @test */
     public function passingZendConfigToConstructorShouldLoadOptions() {
         $config = new Zend_Config_Ini(dirname(__FILE__) . '/config/appconfig.ini', 'testing');
-        $application = new SimpleRestApplication('testing', $config);
+        $application = new RestApplication('testing', $config);
         $this->assertTrue($application->hasOption('foo'));
     }
 
     /** @test */
     public function passingArrayOptionsToConstructorShouldLoadOptions() {
         $config = new Zend_Config_Ini(dirname(__FILE__) . '/config/appconfig.ini', 'testing');
-        $application = new SimpleRestApplication('testing', $config->toArray());
+        $application = new RestApplication('testing', $config->toArray());
         $this->assertTrue($application->hasOption('foo'));
     }
 
@@ -179,7 +179,7 @@ class SimpleRestApplicationTest extends PHPUnit_Framework_TestCase {
     public function optionsShouldRetainOriginalCase() {
         $options = array(
             'pluginPaths' => array(
-                'SimpleRestApplication_Test_Path' => dirname(__FILE__),
+                'RestApplication_Test_Path' => dirname(__FILE__),
             ),
             'Resources' => array(
                 'foo' => array(),
@@ -196,16 +196,16 @@ class SimpleRestApplicationTest extends PHPUnit_Framework_TestCase {
 
     /** @test */
     public function setOptionsShouldProperlyMergeTwoConfigFileOptions() {
-        $application = new SimpleRestApplication('production', dirname(__FILE__) . '/config/appconfig-1.ini');
+        $application = new RestApplication('production', dirname(__FILE__) . '/config/appconfig-1.ini');
         $options = $application->getOptions();
 		$keys = array_keys($options);
-		asort($keys);
+		sort($keys);
         $this->assertEquals(array('config', 'includePaths'), $keys);
     }
 
     /** @test */
     public function hasOptionShouldTreatOptionKeysAsCaseInsensitive() {
-        $application = new SimpleRestApplication('production', array(
+        $application = new RestApplication('production', array(
             'fooBar' => 'baz',
         ));
         $this->assertTrue($application->hasOption('FooBar'));
@@ -213,7 +213,7 @@ class SimpleRestApplicationTest extends PHPUnit_Framework_TestCase {
 
     /** @test */
     public function getOptionShouldTreatOptionKeysAsCaseInsensitive() {
-        $application = new SimpleRestApplication('production', array(
+        $application = new RestApplication('production', array(
             'fooBar' => 'baz',
         ));
         $this->assertEquals('baz', $application->getOption('FooBar'));
@@ -221,7 +221,7 @@ class SimpleRestApplicationTest extends PHPUnit_Framework_TestCase {
 
     /** @test */
     public function optionsCanHandleMultipleConfigFiles() {
-        $application = new SimpleRestApplication('testing', array(
+        $application = new RestApplication('testing', array(
             'config' => array(
                 dirname(__FILE__) . '/config/appconfig-3.ini',
                 dirname(__FILE__) . '/config/appconfig-4.ini'
@@ -232,72 +232,36 @@ class SimpleRestApplicationTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('baz', $application->getOption('foo'));
     }
 
-	/** @test */
-	public function runWithUnknownUriInRequestShouldReturn404Error() {
-		$request = new HttpRequest(array('REQUEST_URI' => "/unknownUri", 'REQUEST_METHOD' => HttpMethods::GET));
-		$response = $this->application->run($request);
-		$this->assertEquals(HttpResponseCodes::HTTP_NOT_FOUND, $response->getResponseCode());
-	}
-
-    /**
-     * @test
-     * @expectedException RestException
-     */
-    public function runWhileResourcePathIsNotDefinedShouldRaiseException() {
-        $application = new SimpleRestApplication('testing');
-		$response = $application->run($this->request);
+    protected function _runApplication($uri, $method) {
+        $request = new HttpRequest(array('REQUEST_URI' => $uri, 'REQUEST_METHOD' => $method));
+		return $this->application->run($request);
+    }
+    
+    protected function _assertResponse($response, $expectedCode, $expectedContent = null) {
+        $this->assertEquals($expectedCode, $response->getResponseCode());
+        if (null != $content) {
+            $this->assertEquals($expectedContent, $response->getContent());
+        }
     }
 
 	/** @test */
-	public function runWithCorrectUriShouldReturn200() {
-	    $request = new HttpRequest(array('REQUEST_URI' => "/users", 'REQUEST_METHOD' => HttpMethods::GET));
-	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
-	 	$this->assertEquals("Users list", $response->getContent());
+	public function runWithUnknownUriInRequestShouldReturn404Error() {
+		$response = $this->_runApplication("/unknownUri", HttpMethods::GET);
+		$this->_assertResponse($response, HttpResponseCodes::HTTP_NOT_FOUND);
+	}
 
-	    $request = new HttpRequest(array('REQUEST_URI' => "/products", 'REQUEST_METHOD' => HttpMethods::GET));
-	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
-	 	$this->assertEquals("Products list", $response->getContent());
+	/** @test */
+	public function runGetMethodWithCorrectBasicUriShouldReturn200() {
+		$response = $this->_runApplication("/users", HttpMethods::GET);
+		$this->_assertResponse($response, HttpResponseCodes::HTTP_OK, "Users list");
 
-	    $request = new HttpRequest(array('REQUEST_URI' => "/user", 'REQUEST_METHOD' => HttpMethods::GET));
-	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
-	 	$this->assertEquals("Show user", $response->getContent());
+		$response = $this->_runApplication("/categories", HttpMethods::GET);
+		$this->_assertResponse($response, HttpResponseCodes::HTTP_OK, "Categories list");
 
-	    $request = new HttpRequest(array('REQUEST_URI' => "/user", 'REQUEST_METHOD' => HttpMethods::POST));
-	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
-	 	$this->assertEquals("Create user", $response->getContent());
+		$response = $this->_runApplication("/categories-list", HttpMethods::GET);
+		$this->_assertResponse($response, HttpResponseCodes::HTTP_OK, "Categories list");
 
-	    $request = new HttpRequest(array('REQUEST_URI' => "/user", 'REQUEST_METHOD' => HttpMethods::PUT));
-	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
-	 	$this->assertEquals("Update user", $response->getContent());
-
-	    $request = new HttpRequest(array('REQUEST_URI' => "/user", 'REQUEST_METHOD' => HttpMethods::DELETE));
-	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
-	 	$this->assertEquals("Delete user", $response->getContent());
-
-	    $request = new HttpRequest(array('REQUEST_URI' => "/product", 'REQUEST_METHOD' => HttpMethods::GET));
-	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
-	 	$this->assertEquals("Show product", $response->getContent());
-
-	    $request = new HttpRequest(array('REQUEST_URI' => "/product", 'REQUEST_METHOD' => HttpMethods::POST));
-	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
-	 	$this->assertEquals("Create product", $response->getContent());
-
-	    $request = new HttpRequest(array('REQUEST_URI' => "/product", 'REQUEST_METHOD' => HttpMethods::PUT));
-	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
-	 	$this->assertEquals("Update product", $response->getContent());
-
-	    $request = new HttpRequest(array('REQUEST_URI' => "/product", 'REQUEST_METHOD' => HttpMethods::DELETE));
-	 	$response = $this->application->run($request);
-	 	$this->assertEquals(HttpResponseCodes::HTTP_OK, $response->getResponseCode());
-	 	$this->assertEquals("Delete product", $response->getContent());
+		$response = $this->_runApplication("/liste-des-categories", HttpMethods::GET);
+		$this->_assertResponse($response, HttpResponseCodes::HTTP_OK, "Categories list");
 	}
 }

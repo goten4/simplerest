@@ -1,7 +1,7 @@
 <?php
 
 /** @resource */
-class ResourceProduct extends ResourceBase {
+class ResourceProduct extends Resource {
 
 	/**
 	 * @get

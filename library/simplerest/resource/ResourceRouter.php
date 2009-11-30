@@ -1,9 +1,9 @@
 <?php
 
 /**
-* Routing class
+* Routing class for resources
 */
-class Router
+class ResourceRouter
 {
     /**
      * URI Mapping
@@ -28,30 +28,27 @@ class Router
 		$reflection = new ReflectionClass('HttpMethods');
 		$httpMethods = $reflection->getConstants();
 		foreach ($httpMethods as $httpMethod) {
-			$this->_uriMap[$httpMethod] = $this->_generateMapForHttpMethod($resource, $httpMethod);
+            $this->_generateMapForHttpMethod($resource, $httpMethod);
 		}
 	}
 	
 	protected function _generateMapForHttpMethod($resource, $httpMethod)
 	{
 		$methodName = strtolower($httpMethod);
-		$call = array($resource, $methodName);
-		$map = array();
 
         $reflection = new ReflectionClass($resource);
 		$method = $reflection->getMethod($methodName);
-		$doc = $method->getDocComment();
-		if (preg_match_all('/@uri\s+(?<uri>\/\S*)/s', $doc, $matches, PREG_SET_ORDER)) {
+		$docComment = $method->getDocComment();
+		if (preg_match_all('/@uri\s+(?<uri>\/\S*)/s', $docComment, $matches, PREG_SET_ORDER)) {
 			foreach ($matches as $match) {
 				$uri = $this->_stripSlash($match['uri']);
-				$map[$uri] = $call;
+				$this->_uriMap[$httpMethod][$uri] = $resource;
 			}
 		}
 		else {
 			$defaultUri = $this->_getDefaultUri($resource);
-			$map[$defaultUri] = $call;
+			$this->_uriMap[$httpMethod][$defaultUri] = $resource;
 		}
-		return $map;
 	}
 	
 	protected function _getDefaultUri($resource)
@@ -75,7 +72,8 @@ class Router
 		$method = $request->getMethod();
 		if (array_key_exists($method, $this->_uriMap)) {
 			if (array_key_exists($uri, $this->_uriMap[$method])) {
-				return $this->_uriMap[$method][$uri];
+			    $resource = $this->_uriMap[$method][$uri];
+				return new $resource();
 			}
 		}
 		return null;

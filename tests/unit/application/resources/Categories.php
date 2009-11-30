@@ -4,7 +4,7 @@
  * Categories resource for testing
  * @resource
  */
-class ResourceCategories extends ResourceBase
+class ResourceCategories extends Resource
 {
 	/**
 	 * @get

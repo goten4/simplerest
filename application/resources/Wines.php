@@ -3,7 +3,7 @@
 /**
 * Users resource
 */
-class ResourceWines extends ResourceBase {
+class ResourceWines extends Resource {
 
 	protected function get($request) {
 		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Wines list");

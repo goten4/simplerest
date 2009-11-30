@@ -4,7 +4,7 @@
  * @resource
  * @uriPrefix /user
  */
-class ResourceUser extends ResourceBase {
+class ResourceUser extends Resource {
 
 	/**
 	 * @get

@@ -19,7 +19,7 @@ require_once 'simplerest/Autoloader.php';
 Autoloader::init(array(LIBRARY_PATH, APPLICATION_PATH));
 
 // Create application, request and run
-$application = new SimpleRestApplication(
+$application = new RestApplication(
     APPLICATION_ENV, 
     APPLICATION_PATH . '/configuration/application.ini'
 );

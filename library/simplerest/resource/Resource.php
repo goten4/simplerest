@@ -6,7 +6,7 @@
  * @package	simplerest.resource
  * @author	Emmanuel Bouton
  */
-abstract class ResourceBase {
+abstract class Resource {
 	
 	private function _notAllowed() {
 		return new HttpResponse(HttpResponseCodes::HTTP_METHOD_NOT_ALLOWED);

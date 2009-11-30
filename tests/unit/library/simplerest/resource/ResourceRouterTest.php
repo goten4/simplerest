@@ -1,12 +1,12 @@
 <?php
 
-class RouterTest extends PHPUnit_Framework_TestCase
+class ResourceRouterTest extends PHPUnit_Framework_TestCase
 {
 	/** @test */
 	public function callWithUnknownUriShouldReturnNull()
 	{
 		$request = new HttpRequest(array('REQUEST_URI' => "/unknownUri", 'REQUEST_METHOD' => HttpMethods::GET));
-		$router = new Router(array());
+		$router = new ResourceRouter(array());
 	    $this->assertNull($router->route($request));
 	}
 
@@ -14,10 +14,10 @@ class RouterTest extends PHPUnit_Framework_TestCase
     public function callWithDefaultUsersUriShouldRouteToUsersResource()
 	{
 		$request = new HttpRequest(array('REQUEST_URI' => "/users", 'REQUEST_METHOD' => HttpMethods::GET));
-		$resources = array('ResourceUsers');
-		$router = new Router($resources);
-		$call = $router->route($request);
-		$this->assertSame(array('ResourceUsers', 'get'), $call);
+		$resources = array('ResourceUsers', 'ResourceCategories');
+		$router = new ResourceRouter($resources);
+		$resource = $router->route($request);
+		$this->assertTrue(is_a($resource, 'ResourceUsers'));
     }
 
     /** @test */
@@ -25,9 +25,9 @@ class RouterTest extends PHPUnit_Framework_TestCase
 	{
 		$request = new HttpRequest(array('REQUEST_URI' => "/categories/", 'REQUEST_METHOD' => HttpMethods::GET));
 		$resources = array('ResourceCategories');
-		$router = new Router($resources);
-		$call = $router->route($request);
-		$this->assertSame(array('ResourceCategories', 'get'), $call);
+		$router = new ResourceRouter($resources);
+		$resource = $router->route($request);
+		$this->assertTrue(is_a($resource, 'ResourceCategories'));
     }
 
 	/** @test */
@@ -35,12 +35,12 @@ class RouterTest extends PHPUnit_Framework_TestCase
 	{
 		$request = new HttpRequest(array('REQUEST_URI' => "/liste-des-categories", 'REQUEST_METHOD' => HttpMethods::GET));
 		$resources = array('ResourceCategories');
-		$router = new Router($resources);
-		$call = $router->route($request);
-		$this->assertSame(array('ResourceCategories', 'get'), $call);
+		$router = new ResourceRouter($resources);
+		$resource = $router->route($request);
+		$this->assertTrue(is_a($resource, 'ResourceCategories'));
 
 		$request = new HttpRequest(array('REQUEST_URI' => "/categories-list", 'REQUEST_METHOD' => HttpMethods::GET));
 		$call = $router->route($request);
-		$this->assertSame(array('ResourceCategories', 'get'), $call);
+		$this->assertTrue(is_a($resource, 'ResourceCategories'));
 	}
 }

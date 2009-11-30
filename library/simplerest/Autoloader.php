@@ -104,7 +104,7 @@ class Autoloader {
 				if ($classFound) {
 					$className = $matches['name'];
 					$this->_filesMap[strtolower($className)] = $file->getRealpath();
-					if (strpos($matches['head'], "* @resource")) {
+					if (strpos($matches['head'], "* @resource") && !in_array($className, $this->_resources)) {
 						$this->_resources[] = $className;
 					}
 				}
