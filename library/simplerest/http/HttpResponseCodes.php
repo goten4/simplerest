@@ -10,7 +10,8 @@
  * @license MIT
  * @link http://www.recessframework.org/
  */
-abstract class HttpResponseCodes {
+abstract class HttpResponseCodes
+{
 	// [Informational 1xx]
 	const HTTP_CONTINUE = 100;
 	const HTTP_SWITCHING_PROTOCOLS = 101;
@@ -108,15 +109,18 @@ abstract class HttpResponseCodes {
 		505=>'505 HTTP Version Not Supported'
 	);
 	
-	public static function getMessageForCode($code) {
+	public static function getMessageForCode($code)
+	{
 		return self::$messages[$code];
 	}
 	
-	public static function isError($code) {
+	public static function isError($code)
+	{
 		return is_numeric($code) && $code >= self::HTTP_BAD_REQUEST;
 	}
 	
-	public static function canHaveBody($code) {
+	public static function canHaveBody($code)
+	{
 		return
 			// True if not in 100s
 			($code < self::HTTP_CONTINUE || $code >= self::HTTP_OK)
@@ -126,4 +130,3 @@ abstract class HttpResponseCodes {
 			$code != self::HTTP_NOT_MODIFIED;
 	}
 }
-?>

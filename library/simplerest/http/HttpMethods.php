@@ -6,7 +6,8 @@
 * @package	simplerest.http
 * @author	Emmanuel Bouton
 */
-class HttpMethods {
+class HttpMethods
+{
 	const OPTIONS = 'OPTIONS';
 	const GET = 'GET';
 	const HEAD = 'HEAD';
