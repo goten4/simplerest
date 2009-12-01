@@ -8,73 +8,92 @@
  */
 abstract class Resource {
 	
-	private function _notAllowed() {
-		return new HttpResponse(HttpResponseCodes::HTTP_METHOD_NOT_ALLOWED);
+	protected $_request;
+	protected $_response;
+	
+	function __construct($request) {
+		$this->_request = $request;
+		$this->_response = new HttpResponse();
 	}
 	
-	public function callMethod($request) {
+	public function callMethod() {
 	
-	    switch ($request->getMethod()) {
+	    switch ($this->_request->getMethod()) {
 	        case HttpMethods::OPTIONS:
-	            $response = $this->options($request);
+	            $representation = $this->options();
 	            break;
 	        case HttpMethods::GET:
-	            $response = $this->get($request);
+	            $representation = $this->get();
 	            break;
 	        case HttpMethods::HEAD:
-	            $response = $this->head($request);
+	            $representation = $this->head();
 	            break;
 	        case HttpMethods::POST:
-	            $response = $this->post($request);
+	            $representation = $this->post();
 	            break;
 	        case HttpMethods::PUT:
-	            $response = $this->put($request);
+	            $representation = $this->put();
 	            break;
 	        case HttpMethods::DELETE:
-	            $response = $this->delete($request);
+	            $representation = $this->delete();
 	            break;
 	        case HttpMethods::TRACE:
-	            $response = $this->trace($request);
+	            $representation = $this->trace();
 	            break;
 	        case HttpMethods::CONNECT:
-	            $response = $this->connect($request);
+	            $representation = $this->connect();
 	            break;
 	        default:
-	            $response = new HttpResponse(HttpResponseCodes::HTTP_BAD_REQUEST);
+	            $this->_response->setStatus(HttpStatus::HTTP_BAD_REQUEST);
 	            break;
 	    }
-	    return $response;
+	    return $this->_response;
+	}
+	
+	protected function setStatus($status)
+	{
+	    $this->_response->setStatus($status);
+	}
+	
+	protected function setContent($content)
+	{
+	    $this->_response->setContent($content);
+	}
+	
+	private function _notAllowed() {
+		$this->_response->setStatus(HttpStatus::HTTP_METHOD_NOT_ALLOWED);
+		return null;
 	}
 
-	protected function options($request) {
+	protected function options() {
 		return $this->_notAllowed();
 	}
 
-	protected function get($request) {
+	protected function get() {
 		return $this->_notAllowed();
 	}
 
-	protected function head($request) {
+	protected function head() {
 		return $this->_notAllowed();
 	}
 
-	protected function post($request) {
+	protected function post() {
 		return $this->_notAllowed();
 	}
 
-	protected function put($request) {
+	protected function put() {
 		return $this->_notAllowed();
 	}
 
-	protected function delete($request) {
+	protected function delete() {
 		return $this->_notAllowed();
 	}
 
-	protected function trace($request) {
+	protected function trace() {
 		return $this->_notAllowed();
 	}
 
-	protected function connect($request) {
+	protected function connect() {
 		return $this->_notAllowed();
 	}
 }

@@ -10,29 +10,37 @@ class UserResource extends Resource {
 	 * @get
 	 * @uri :id
 	 */
-	protected function get($id) {
-		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Show user");
+	protected function get() {
+		$this->setStatus(HttpStatus::HTTP_OK);
+		$this->setContent("Show user");
+		return null;
 	}
 
 	/**
 	 * @post
 	 */
-	protected function post($data) {
-		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Create user");
+	protected function post() {
+		$this->setStatus(HttpStatus::HTTP_OK);
+		$this->setContent("Create user");
+		return null;
 	}
 
 	/**
 	 * @put
 	 */
-	protected function put($data) {
-		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Update user");
+	protected function put() {
+		$this->setStatus(HttpStatus::HTTP_OK);
+		$this->setContent("Update user");
+		return null;
 	}
 
 	/**
 	 * @delete
 	 * @uri :id
 	 */
-	protected function delete($id) {
-		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Delete user");
+	protected function delete() {
+		$this->setStatus(HttpStatus::HTTP_OK);
+		$this->setContent("Delete user");
+		return null;
 	}
 }

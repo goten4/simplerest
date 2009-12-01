@@ -65,7 +65,11 @@ class HttpRequest
 
 	protected function _getFormatFromAcceptHeader()
 	{
-		return MimeTypes::getFormat($this->_server["HTTP_ACCEPT"]);
+		$format = null;
+		if (array_key_exists('HTTP_ACCEPT', $this->_server)) {
+			$format = MimeTypes::getFormat($this->_server["HTTP_ACCEPT"]);
+		}
+		return $format;
 	}
 
 	protected function _stripQueryString($uri)

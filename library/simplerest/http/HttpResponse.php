@@ -8,21 +8,9 @@
  */
 class HttpResponse
 {
-    protected $_responseCode;
+    protected $_status = HttpStatus::HTTP_OK;
     protected $_headers = array();
-    protected $_content;
-
-    /**
-     * Constructor
-     * @param int HTTP Response Code
-     * @param string Response Content
-     * @return void
-     */
-    public function __construct($responseCode, $content = null)
-	{
-		$this->_responseCode = $responseCode;
-		$this->_content = ( isset($content) ? $content : HttpResponseCodes::getMessageForCode($responseCode) );
-	}
+    protected $_content = null;
 
 	public function addHeader($header)
 	{
@@ -34,13 +22,23 @@ class HttpResponse
 	    return $this->_headers;
 	}
 	
+	public function setContent($content)
+	{
+	    $this->_content = $content;
+	}
+	
 	public function getContent()
 	{
 	    return $this->_content;
 	}
 	
-	public function getResponseCode()
+	public function setStatus($status)
 	{
-	    return $this->_responseCode;
+	    $this->_status = $status;
+	}
+	
+	public function getStatus()
+	{
+	    return $this->_status;
 	}
 }

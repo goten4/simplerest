@@ -6,7 +6,9 @@
  */
 class ProductsResource extends Resource {
 
-	protected function get($request) {
-		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Products list");
+	protected function get() {
+		$this->setStatus(HttpStatus::HTTP_OK);
+		$this->setContent("Products list");
+		return null;
 	}
 }

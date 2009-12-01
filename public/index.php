@@ -24,7 +24,7 @@ $request = new HttpRequest($_SERVER);
 $response = $application->run($request);
 header(
 	$_SERVER["SERVER_PROTOCOL"] . " " . 
-	HttpResponseCodes::getMessageForCode($response->getResponseCode())
+	HttpStatus::getMessage($response->getStatus())
 );
 header('Content-type: text/html');
 echo $response->getContent();

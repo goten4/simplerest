@@ -102,7 +102,7 @@ class ResourceRouter
 		if (array_key_exists($method, $this->_uriMap)) {
 			if (array_key_exists($uri, $this->_uriMap[$method])) {
 			    $resource = $this->_uriMap[$method][$uri];
-				return new $resource();
+				return new $resource($request);
 			}
 		}
 		return null;

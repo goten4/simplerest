@@ -236,8 +236,8 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
 		return $this->application->run($request);
     }
     
-    protected function _assertResponse($response, $expectedCode, $expectedContent = null) {
-        $this->assertEquals($expectedCode, $response->getResponseCode());
+    protected function _assertResponse($response, $expectedStatus, $expectedContent = null) {
+        $this->assertEquals($expectedStatus, $response->getStatus());
         if (null != $expectedContent) {
             $this->assertEquals($expectedContent, $response->getContent());
         }
@@ -246,21 +246,21 @@ class RestApplicationTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function runWithUnknownUriInRequestShouldReturn404Error() {
 		$response = $this->_runApplication("/unknownUri", HttpMethods::GET);
-		$this->_assertResponse($response, HttpResponseCodes::HTTP_NOT_FOUND);
+		$this->_assertResponse($response, HttpStatus::HTTP_NOT_FOUND);
 	}
 
 	/** @test */
 	public function runGetMethodWithCorrectBasicUriShouldReturn200() {
 		$response = $this->_runApplication("/users", HttpMethods::GET);
-		$this->_assertResponse($response, HttpResponseCodes::HTTP_OK, "Users list");
+		$this->_assertResponse($response, HttpStatus::HTTP_OK, "Users list");
 
 		$response = $this->_runApplication("/categories", HttpMethods::GET);
-		$this->_assertResponse($response, HttpResponseCodes::HTTP_OK, "Categories list");
+		$this->_assertResponse($response, HttpStatus::HTTP_OK, "Categories list");
 
 		$response = $this->_runApplication("/categories-list", HttpMethods::GET);
-		$this->_assertResponse($response, HttpResponseCodes::HTTP_OK, "Categories list");
+		$this->_assertResponse($response, HttpStatus::HTTP_OK, "Categories list");
 
 		$response = $this->_runApplication("/liste-des-categories", HttpMethods::GET);
-		$this->_assertResponse($response, HttpResponseCodes::HTTP_OK, "Categories list");
+		$this->_assertResponse($response, HttpStatus::HTTP_OK, "Categories list");
 	}
 }

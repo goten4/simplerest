@@ -48,15 +48,19 @@ class MimeTypes
     
     public static function getMimeType($format)
     {
-        if (is_array(self::$_mapFormatToMime[$format])) {
-            return self::$_mapFormatToMime[$format][0];
-        }
-        return self::$_mapFormatToMime[$format];
+		$mimeType = null;
+		if (array_key_exists($format, self::$_mapFormatToMime)) {
+			$mimeType = (
+				is_array(self::$_mapFormatToMime[$format]) ?
+					self::$_mapFormatToMime[$format][0] : 
+					self::$_mapFormatToMime[$format] );
+		}
+		return $mimeType;
     }
     
     public static function getFormat($mimeType)
     {
-        return self::$_mapMimeToFormat[$mimeType];
+        return ( array_key_exists($mimeType, self::$_mapMimeToFormat) ? self::$_mapMimeToFormat[$mimeType] : null );
     }
 }
 MimeTypes::init();

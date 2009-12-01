@@ -9,9 +9,9 @@
  */
 class WinesResource extends Resource
 {
-	protected function get($request)
+	protected function get()
 	{
-		switch ($request->getFormat()) {
+		switch ($this->_request->getFormat()) {
 			case Formats::XML:
 				$content =
 					"<wines>\n" .
@@ -61,6 +61,7 @@ class WinesResource extends Resource
 					"</html>\n";
 				break;
 		}
-		return new HttpResponse(HttpResponseCodes::HTTP_OK, $content);
+		$this->_response->setContent($content);
+		return null;
 	}
 }

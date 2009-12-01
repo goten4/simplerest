@@ -269,9 +269,13 @@ class RestApplication {
 		$router = new ResourceRouter($resources);
 		$resource = $router->route($request);
 		//$router->debug();
-		if (null == $resource)
-		    return new HttpResponse(HttpResponseCodes::HTTP_NOT_FOUND);
-		else
+		if (null == $resource) {
+			$response = new HttpResponse();
+			$response->setStatus(HttpStatus::HTTP_NOT_FOUND);
+		    return $response;
+		}
+		else {
 		    return $resource->callMethod($request);
+		}
     }
 }

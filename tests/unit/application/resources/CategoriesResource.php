@@ -13,7 +13,9 @@ class CategoriesResource extends Resource
 	 * @uri /categories-list
 	 * @uri /liste-des-categories
 	 */
-	protected function get($request) {
-		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Categories list");
+	protected function get() {
+		$this->setStatus(HttpStatus::HTTP_OK);
+		$this->setContent("Categories list");
+		return null;
 	}
 }

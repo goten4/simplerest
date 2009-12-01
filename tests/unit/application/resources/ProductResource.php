@@ -7,31 +7,39 @@ class ProductResource extends Resource {
 	 * @get
 	 * @uri /product/:id
 	 */
-	protected function get($id) {
-		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Show product");
+	protected function get() {
+		$this->setStatus(HttpStatus::HTTP_OK);
+		$this->setContent("Show product");
+		return null;
 	}
 
 	/**
 	 * @post
 	 * @uri /product
 	 */
-	protected function post($data) {
-		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Create product");
+	protected function post() {
+		$this->setStatus(HttpStatus::HTTP_OK);
+		$this->setContent("Create product");
+		return null;
 	}
 
 	/**
 	 * @put
 	 * @uri /product
 	 */
-	protected function put($data) {
-		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Update product");
+	protected function put() {
+		$this->setStatus(HttpStatus::HTTP_OK);
+		$this->setContent("Update product");
+		return null;
 	}
 
 	/**
 	 * @delete
 	 * @uri /product/:id
 	 */
-	protected function delete($id) {
-		return new HttpResponse(HttpResponseCodes::HTTP_OK, "Delete product");
+	protected function delete() {
+		$this->setStatus(HttpStatus::HTTP_OK);
+		$this->setContent("Delete product");
+		return null;
 	}
 }
