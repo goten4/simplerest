@@ -21,4 +21,10 @@ class Formats
 	const JPG  = 'jpg';
 	const GIF  = 'gif';
 	const CSV  = 'csv';
+	
+	public static function getList()
+	{
+	    $reflection = new ReflectionClass('Formats');
+		return $reflection->getConstants();
+	}
 }

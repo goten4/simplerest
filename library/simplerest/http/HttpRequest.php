@@ -43,6 +43,10 @@ class HttpRequest
         $this->_server  = (null == $server ? $_SERVER : $server);
         $this->_request = (null == $request ? $_REQUEST : $request);
 		$this->_parseUri();
+		if (null == $this->_format) {
+		    $format = $this->_getFormatFromAcceptHeader();
+		    $this->_format = ( $format ? $format : Formats::HTML );
+		}
     }
 
 	protected function _parseUri()
@@ -51,14 +55,17 @@ class HttpRequest
 			$this->_uri = $this->_stripQueryString($this->_server["REQUEST_URI"]);
 			if ($extensionPosition = strrpos($this->_uri, '.')) {
 				$extension = strtolower(substr($this->_uri, $extensionPosition+1));
-				$reflection = new ReflectionClass('Formats');
-				$formats = $reflection->getConstants();
-				if (in_array($extension, $formats)) {
+				if (in_array($extension, Formats::getList())) {
 					$this->_uri = substr($this->_uri, 0, $extensionPosition);
 					$this->_format = $extension;
 				}
 			}
 		}
+	}
+
+	protected function _getFormatFromAcceptHeader()
+	{
+		return MimeTypes::getFormat($this->_server["HTTP_ACCEPT"]);
 	}
 
 	protected function _stripQueryString($uri)

@@ -23,4 +23,18 @@ class HttpRequestTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals("/users", $httpRequest->getUri());
 		$this->assertEquals(Formats::XML, $httpRequest->getFormat());
     }
+
+    /** @test */
+    public function whenUriHasNoFormatExtensionConstructorShouldSetTheFormatFromAcceptHeader()
+    {
+        $httpRequest = new HttpRequest(array("REQUEST_URI" => "/users", "HTTP_ACCEPT" => "application/xml"));
+		$this->assertEquals(Formats::XML, $httpRequest->getFormat());
+    }
+
+    /** @test */
+    public function whenUriHasNoFormatExtensionAndAcceptHeaderIsUnknownConstructorShouldSetTheFormatHtml()
+    {
+        $httpRequest = new HttpRequest(array("REQUEST_URI" => "/users", "HTTP_ACCEPT" => "bad/mime-type"));
+		$this->assertEquals(Formats::HTML, $httpRequest->getFormat());
+    }
 }
