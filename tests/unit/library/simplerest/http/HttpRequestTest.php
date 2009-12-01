@@ -21,6 +21,6 @@ class HttpRequestTest extends PHPUnit_Framework_TestCase
     {
         $httpRequest = new HttpRequest(array("REQUEST_URI" => "/users.xml"));
 		$this->assertEquals("/users", $httpRequest->getUri());
-		$this->assertEquals(HttpFormats::XML, $httpRequest->getFormat());
+		$this->assertEquals(Formats::XML, $httpRequest->getFormat());
     }
 }

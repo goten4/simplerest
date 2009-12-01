@@ -28,7 +28,7 @@ class HttpRequest
 	
 	/**
 	 * Format of the request (get from the accept header or from the extension of the uri)
-	 * @var HttpFormat
+	 * @var Format
 	 */
 	protected $_format = null;
 
@@ -51,9 +51,9 @@ class HttpRequest
 			$this->_uri = $this->_stripQueryString($this->_server["REQUEST_URI"]);
 			if ($extensionPosition = strrpos($this->_uri, '.')) {
 				$extension = strtolower(substr($this->_uri, $extensionPosition+1));
-				$reflection = new ReflectionClass('HttpFormats');
-				$httpFormats = $reflection->getConstants();
-				if (in_array($extension, $httpFormats)) {
+				$reflection = new ReflectionClass('Formats');
+				$formats = $reflection->getConstants();
+				if (in_array($extension, $formats)) {
 					$this->_uri = substr($this->_uri, 0, $extensionPosition);
 					$this->_format = $extension;
 				}
@@ -78,7 +78,7 @@ class HttpRequest
 
     /**
      * Get the Format requested
-     * @return HttpFormat
+     * @return Format
      */
     public function getFormat()
 	{

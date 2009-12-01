@@ -12,7 +12,7 @@ class WinesResource extends Resource
 	protected function get($request)
 	{
 		switch ($request->getFormat()) {
-			case HttpFormats::XML:
+			case Formats::XML:
 				$content =
 					"<wines>\n" .
 					"	<wine>\n" .
@@ -32,7 +32,7 @@ class WinesResource extends Resource
 					"	</wine>\n" .
 					"</wines>\n";
 				break;
-			case HttpFormats::JSON:
+			case Formats::JSON:
 				$content =
 					"{ \n" .
 					"	{ 'name' => 'Château Margaux',\n" .
