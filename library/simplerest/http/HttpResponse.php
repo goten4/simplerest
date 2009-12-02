@@ -21,9 +21,9 @@ class HttpResponse
     public function __construct($request)
     {
         // Default values
-        $acceptHeader = $request->getHeader('HTTP_ACCEPT');
-        $defaultContentType = ( null == $acceptHeader ? MimeTypes::getMimeType(Formats::HTML) : $acceptHeader );
-        $this->setContentType($defaultContentType);
+        // $acceptHeader = $request->getHeader('HTTP_ACCEPT');
+        // $defaultContentType = ( null == $acceptHeader ? MimeTypes::getMimeType(Formats::HTML) : $acceptHeader );
+        $this->setContentType(MimeTypes::getMimeType($request->getFormat()));
         $this->_status = HttpStatus::HTTP_OK;
         $this->_content = null;
         $this->_request = $request;
