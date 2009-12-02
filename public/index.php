@@ -23,5 +23,8 @@ $application = new RestApplication(
 $request = new HttpRequest($_SERVER);
 $response = $application->run($request);
 header($response->getStatusHeader());
-header('Content-type: text/html');
+$headers = $response->getHeaders();
+foreach ($headers as $name => $value) {
+	header($name . ": " . $value);
+}
 echo $response->getContent();
