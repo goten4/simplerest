@@ -22,9 +22,6 @@ $application = new RestApplication(
 );
 $request = new HttpRequest($_SERVER);
 $response = $application->run($request);
-header(
-	$_SERVER["SERVER_PROTOCOL"] . " " . 
-	HttpStatus::getMessage($response->getStatus())
-);
+header($response->getStatusHeader());
 header('Content-type: text/html');
 echo $response->getContent();

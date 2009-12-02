@@ -270,7 +270,7 @@ class RestApplication {
 		$resource = $router->route($request);
 		//$router->debug();
 		if (null == $resource) {
-			$response = new HttpResponse();
+			$response = new HttpResponse($request);
 			$response->setStatus(HttpStatus::HTTP_NOT_FOUND);
 		    return $response;
 		}

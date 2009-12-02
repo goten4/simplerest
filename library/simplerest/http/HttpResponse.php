@@ -8,18 +8,50 @@
  */
 class HttpResponse
 {
-    protected $_status = HttpStatus::HTTP_OK;
+    protected $_status;
     protected $_headers = array();
-    protected $_content = null;
+    protected $_content;
+    protected $_request;
 
-	public function addHeader($header)
+    /**
+     * Constructor
+     * 
+     * @return void
+     */
+    public function __construct($request)
+    {
+        // Default values
+        $acceptHeader = $request->getHeader('HTTP_ACCEPT');
+        $defaultContentType = ( null == $acceptHeader ? MimeTypes::getMimeType(Formats::HTML) : $acceptHeader );
+        $this->setContentType($defaultContentType);
+        $this->_status = HttpStatus::HTTP_OK;
+        $this->_content = null;
+        $this->_request = $request;
+    }
+
+	public function addHeader($name, $value)
 	{
-		$this->headers[] = $header;
+		$this->_headers[$name] = $value;
 	}
 	
 	public function getHeaders()
 	{
 	    return $this->_headers;
+	}
+	
+	public function getHeader($name)
+	{
+	    return $this->_headers[$name];
+	}
+	
+	public function setContentType($contentType)
+	{
+	    $this->addHeader(HttpHeaders::CONTENT_TYPE, $contentType);
+	}
+	
+	public function getContentType()
+	{
+	    return $this->getHeader(HttpHeaders::CONTENT_TYPE);
 	}
 	
 	public function setContent($content)
@@ -40,5 +72,10 @@ class HttpResponse
 	public function getStatus()
 	{
 	    return $this->_status;
+	}
+	
+	public function getStatusHeader()
+	{
+	    return $this->_request->getHeader('SERVER_PROTOCOL') . " " . $this->_status . " " . HttpStatus::getMessage($this->_status);
 	}
 }

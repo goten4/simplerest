@@ -1,7 +1,7 @@
 <?php
 
 /**
-* HTTP Methods
+* Provides constants for HTTP Methods
 * 
 * @package	simplerest.http
 * @author	Emmanuel Bouton

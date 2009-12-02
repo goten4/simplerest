@@ -20,6 +20,9 @@ class Formats
 	const PNG  = 'png';
 	const JPG  = 'jpg';
 	const GIF  = 'gif';
+	const PDF  = 'pdf';
+	const DOC  = 'doc';
+	const XLS  = 'xls';
 	const CSV  = 'csv';
 	
 	public static function getList()

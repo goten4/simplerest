@@ -6,18 +6,20 @@
  * @package	simplerest.resource
  * @author	Emmanuel Bouton
  */
-abstract class Resource {
-	
+abstract class Resource
+{
 	protected $_request;
 	protected $_response;
 	
-	function __construct($request) {
+	function __construct($request)
+	{
 		$this->_request = $request;
-		$this->_response = new HttpResponse();
+		$this->_response = new HttpResponse($request);
 	}
 	
-	public function callMethod() {
-	
+	public function callMethod()
+	{
+	    $representation = null;
 	    switch ($this->_request->getMethod()) {
 	        case HttpMethods::OPTIONS:
 	            $representation = $this->options();
@@ -47,6 +49,9 @@ abstract class Resource {
 	            $this->_response->setStatus(HttpStatus::HTTP_BAD_REQUEST);
 	            break;
 	    }
+	    if (null != $representation) {
+	        $this->setContent($representation->getContent());
+	    }
 	    return $this->_response;
 	}
 	
@@ -60,40 +65,48 @@ abstract class Resource {
 	    $this->_response->setContent($content);
 	}
 	
-	private function _notAllowed() {
+	private function _notAllowed()
+	{
 		$this->_response->setStatus(HttpStatus::HTTP_METHOD_NOT_ALLOWED);
-		return null;
 	}
 
-	protected function options() {
-		return $this->_notAllowed();
+	protected function options()
+	{
+		$this->_notAllowed();
 	}
 
-	protected function get() {
-		return $this->_notAllowed();
+	protected function get()
+	{
+		$this->_notAllowed();
 	}
 
-	protected function head() {
-		return $this->_notAllowed();
+	protected function head()
+	{
+		$this->_notAllowed();
 	}
 
-	protected function post() {
-		return $this->_notAllowed();
+	protected function post()
+	{
+		$this->_notAllowed();
 	}
 
-	protected function put() {
-		return $this->_notAllowed();
+	protected function put()
+	{
+		$this->_notAllowed();
 	}
 
-	protected function delete() {
-		return $this->_notAllowed();
+	protected function delete()
+	{
+		$this->_notAllowed();
 	}
 
-	protected function trace() {
-		return $this->_notAllowed();
+	protected function trace()
+	{
+		$this->_notAllowed();
 	}
 
-	protected function connect() {
-		return $this->_notAllowed();
+	protected function connect()
+	{
+		$this->_notAllowed();
 	}
 }

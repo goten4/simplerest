@@ -26,6 +26,9 @@ class MimeTypes
 		                Formats::PNG  => 'image/png',
 		                Formats::JPG  => 'image/jpeg', 'image/pjpeg',
 		                Formats::GIF  => 'image/gif',
+		                Formats::PDF  => 'application/pdf',
+		                Formats::DOC  => array('application/vnd.ms-word', 'application/msword'),
+		                Formats::XLS  => array('application/vnd.ms-excel', 'application/x-excel', 'application/ms-excel'),
 		                Formats::CSV  => 'text/csv');
 		self::$_mapMimeToFormat = self::_revertMap(self::$_mapFormatToMime);
     }

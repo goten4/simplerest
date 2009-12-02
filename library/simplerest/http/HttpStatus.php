@@ -1,6 +1,6 @@
 <?php
 /**
- * Provides constants for HTTP status codes
+ * Provides constants for HTTP Status Codes
  * 
  * @author Emmanuel Bouton
  * @package simplerest.http

@@ -1,85 +1,114 @@
 <?php
 
-class TestResource extends Resource {}
+class NoMethodResource extends Resource {}
 
-class ResourceTest extends PHPUnit_Framework_TestCase {
 
-	private function _assertStatus($status, $response) {
+class HelloWorldResource extends Resource
+{
+    protected function get()
+	{
+		return new StringRepresentation("Hello World!");
+	}
+}
+
+class ResourceTest extends PHPUnit_Framework_TestCase
+{
+
+	private function _assertStatus($status, $response)
+	{
 		$this->assertNotNull($response);
 		$this->assertEquals($status, $response->getStatus());
 	}
 
-	private function _assert405($response) {
+	private function _assert405($response)
+	{
 		$this->_assertStatus(HttpStatus::HTTP_METHOD_NOT_ALLOWED, $response);
 	}
 	
 	private function _newResource($method)
 	{
 		$request = new HttpRequest(array('REQUEST_METHOD' => $method));
-		$response = new HttpResponse();
-		return new TestResource($request, $response);
+		return new NoMethodResource($request);
 	}
 
     /** @test */
-    public function callToBadMethodShouldReturn400() {
+    public function callToBadMethodShouldReturn400()
+    {
         $resource = $this->_newResource('BAD_METHOD');
 		$response = $resource->callMethod();
 		$this->_assertStatus(HttpStatus::HTTP_BAD_REQUEST, $response);
     }
 
     /** @test */
-    public function optionsMethodShouldReturn405() {
+    public function optionsMethodShouldReturn405()
+    {
         $resource = $this->_newResource(HttpMethods::OPTIONS);
 		$response = $resource->callMethod();
 		$this->_assert405($response);
     }
 
     /** @test */
-    public function getMethodShouldReturn405() {
+    public function getMethodShouldReturn405()
+    {
         $resource = $this->_newResource(HttpMethods::GET);
 		$response = $resource->callMethod();
 		$this->_assert405($response);
     }
 
     /** @test */
-    public function headMethodShouldReturn405() {
+    public function headMethodShouldReturn405()
+    {
         $resource = $this->_newResource(HttpMethods::HEAD);
 		$response = $resource->callMethod();
 		$this->_assert405($response);
     }
 
     /** @test */
-    public function postMethodShouldReturn405() {
+    public function postMethodShouldReturn405()
+    {
         $resource = $this->_newResource(HttpMethods::POST);
 		$response = $resource->callMethod();
 		$this->_assert405($response);
     }
 
     /** @test */
-    public function putMethodShouldReturn405() {
+    public function putMethodShouldReturn405()
+    {
         $resource = $this->_newResource(HttpMethods::PUT);
 		$response = $resource->callMethod();
 		$this->_assert405($response);
     }
 
     /** @test */
-    public function deleteMethodShouldReturn405() {
+    public function deleteMethodShouldReturn405()
+    {
         $resource = $this->_newResource(HttpMethods::DELETE);
 		$response = $resource->callMethod();
 		$this->_assert405($response);
     }
 
     /** @test */
-    public function traceMethodShouldReturn405() {
+    public function traceMethodShouldReturn405()
+    {
         $resource = $this->_newResource(HttpMethods::TRACE);
 		$response = $resource->callMethod();
 		$this->_assert405($response);
     }
 
     /** @test */
-    public function connectMethodShouldReturn405() {
+    public function connectMethodShouldReturn405()
+    {
         $resource = $this->_newResource(HttpMethods::CONNECT);
 		$response = $resource->callMethod();
 		$this->_assert405($response);
+    }
+    
+    /** @test */
+    public function callMethodShouldStoreTheRepresentationContentInTheResponse()
+    {
+        $request = new HttpRequest(array('REQUEST_METHOD' => HttpMethods::GET));
+        $resource = new HelloWorldResource($request);
+        $response = $resource->callMethod();
+        $this->assertEquals("Hello World!", $response->getContent());
     }
 }
