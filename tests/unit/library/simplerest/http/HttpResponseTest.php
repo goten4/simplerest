@@ -9,6 +9,13 @@ class HttpResponseTest extends PHPUnit_Framework_TestCase
 	    $this->assertEquals(HttpStatus::HTTP_OK, $response->getStatus());
 	    $this->assertNull($response->getContent());
     }
+    
+    /** @test */
+    public function constructorShouldStoreTheGivenStatus()
+    {
+        $response = new HttpResponse(new HttpRequest(), HttpStatus::HTTP_NOT_FOUND);
+        $this->assertEquals(HttpStatus::HTTP_NOT_FOUND, $response->getStatus());
+    }
 
     /** @test */
     public function whenRequestHasNoAcceptHeaderConstructorShouldInitContentTypeToHTML()

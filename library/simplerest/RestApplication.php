@@ -9,8 +9,8 @@ require_once 'simplerest/Autoloader.php';
  * @package	simplerest
  * @author	Emmanuel Bouton
  */
-class RestApplication {
-
+class RestApplication
+{
     /**
      * Application environment
      * 
@@ -83,7 +83,8 @@ class RestApplication {
      * 
      * @return string
      */
-    public function getEnvironment() {
+    public function getEnvironment()
+    {
         return $this->_environment;
     }
 
@@ -93,8 +94,8 @@ class RestApplication {
      * @param  array $options 
      * @return RestApplication
      */
-    public function setOptions(array $options) {
-	
+    public function setOptions(array $options)
+    {
         if (!empty($options['config'])) {
             if (is_array($options['config'])) {
                 $_options = array();
@@ -129,7 +130,8 @@ class RestApplication {
      * 
      * @return array
      */
-    public function getOptions() {
+    public function getOptions()
+    {
         return $this->_options;
     }
 
@@ -139,7 +141,8 @@ class RestApplication {
      * @param  string $key 
      * @return bool
      */
-    public function hasOption($key) {
+    public function hasOption($key)
+    {
         return in_array(strtolower($key), $this->_optionKeys);
     }
 
@@ -149,8 +152,8 @@ class RestApplication {
      * @param  string $key 
      * @return mixed
      */
-    public function getOption($key) {
-	
+    public function getOption($key)
+    {
         if ($this->hasOption($key)) {
             $options = $this->getOptions();
             $options = array_change_key_case($options, CASE_LOWER);
@@ -166,8 +169,8 @@ class RestApplication {
      * @param  mixed $array2 
      * @return array
      */
-    public function mergeOptions(array $array1, $array2 = null) {
-	
+    public function mergeOptions(array $array1, $array2 = null)
+    {
         if (is_array($array2)) {
             foreach ($array2 as $key => $val) {
                 if (is_array($array2[$key])) {
@@ -189,8 +192,8 @@ class RestApplication {
      * @param  string $prefix Key prefix to prepend to array values (used to map . separated INI values)
      * @return RestApplication
      */
-    public function setPhpSettings(array $settings, $prefix = '') {
-	
+    public function setPhpSettings(array $settings, $prefix = '')
+    {
         foreach ($settings as $key => $value) {
             $key = empty($prefix) ? $key : $prefix . $key;
             if (is_scalar($value)) {
@@ -210,8 +213,8 @@ class RestApplication {
      * @param  array $paths 
      * @return RestApplication
      */
-    public function setIncludePaths(array $paths) {
-	
+    public function setIncludePaths(array $paths)
+    {
         $path = implode(PATH_SEPARATOR, $paths);
         set_include_path($path . PATH_SEPARATOR . get_include_path());
         return $this;
@@ -224,8 +227,8 @@ class RestApplication {
      * @throws RestException When invalid configuration file is provided 
      * @return array
      */
-    protected function _loadConfig($file) {
-	
+    protected function _loadConfig($file)
+    {
         $environment = $this->getEnvironment();
         $suffix      = strtolower(pathinfo($file, PATHINFO_EXTENSION));
         

@@ -18,13 +18,13 @@ class HttpResponse
      * 
      * @return void
      */
-    public function __construct($request)
+    public function __construct($request, $status = null)
     {
         // Default values
         // $acceptHeader = $request->getHeader('HTTP_ACCEPT');
         // $defaultContentType = ( null == $acceptHeader ? MimeTypes::getMimeType(Formats::HTML) : $acceptHeader );
         $this->setContentType(MimeTypes::getMimeType($request->getFormat()));
-        $this->_status = HttpStatus::HTTP_OK;
+        $this->_status = ( $status ? $status : HttpStatus::HTTP_OK );
         $this->_content = null;
         $this->_request = $request;
     }

@@ -4,7 +4,6 @@
 class ProductResource extends Resource {
 
 	/**
-	 * @get
 	 * @uri /product/:id
 	 */
 	protected function get() {
@@ -14,7 +13,6 @@ class ProductResource extends Resource {
 	}
 
 	/**
-	 * @post
 	 * @uri /product
 	 */
 	protected function post() {
@@ -24,7 +22,6 @@ class ProductResource extends Resource {
 	}
 
 	/**
-	 * @put
 	 * @uri /product
 	 */
 	protected function put() {
@@ -34,7 +31,6 @@ class ProductResource extends Resource {
 	}
 
 	/**
-	 * @delete
 	 * @uri /product/:id
 	 */
 	protected function delete() {
