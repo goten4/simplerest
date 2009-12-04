@@ -78,4 +78,16 @@ class HttpResponse
 	{
 	    return $this->_request->getHeader('SERVER_PROTOCOL') . " " . $this->_status . " " . HttpStatus::getMessage($this->_status);
 	}
+	
+	public function send()
+	{
+		header($this->getStatusHeader());
+		$headers = $this->getHeaders();
+		foreach ($headers as $name => $value) {
+			header($name . ": " . $value);
+		}
+		if (HttpStatus::canHaveBody($this->getStatus())) {
+			echo $this->getContent();
+		}
+	}
 }

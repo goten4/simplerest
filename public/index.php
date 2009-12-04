@@ -20,11 +20,4 @@ $application = new RestApplication(
     APPLICATION_ENV, 
     APPLICATION_PATH . '/configuration/application.ini'
 );
-$request = new HttpRequest($_SERVER);
-$response = $application->run($request);
-header($response->getStatusHeader());
-$headers = $response->getHeaders();
-foreach ($headers as $name => $value) {
-	header($name . ": " . $value);
-}
-echo $response->getContent();
+$application->run();

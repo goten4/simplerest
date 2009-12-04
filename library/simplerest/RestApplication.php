@@ -266,19 +266,18 @@ class RestApplication
      * 
      * @return void
      */
-    public function run($request)
+    public function run()
     {
+		$request = new HttpRequest($_SERVER, $_REQUEST);
         $resources = $this->_autoloader->getResources();
 		$router = new ResourceRouter($resources);
 		$resource = $router->route($request);
-		//$router->debug();
 		if (null == $resource) {
-			$response = new HttpResponse($request);
-			$response->setStatus(HttpStatus::HTTP_NOT_FOUND);
-		    return $response;
+			$response = new HttpResponse($request, HttpStatus::HTTP_NOT_FOUND);
 		}
 		else {
-		    return $resource->callMethod($request);
+		    $response = $resource->callMethod($request);
 		}
+		$response->send();
     }
 }
