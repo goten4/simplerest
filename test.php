@@ -23,25 +23,10 @@ class HttpRequest
         $this->request = $request;
     }
 
-	public function getServer()
-	{
-	    return $this->server;
-	}
-	
-	public function setServer($server)
-	{
-	    $this->server = $server;
-	}
-	
-	public function getRequest()
-	{
-	    return $this->request;
-	}
-	
-	public function setRequest($request)
-	{
-	    $this->request = $request;
-	}
+	public function getServer() { return $this->server; }
+	public function setServer($server) { $this->server = $server; }
+	public function getRequest() { return $this->request; }
+	public function setRequest($request) { $this->request = $request; }
 	
 	public function toJson()
 	{
@@ -53,8 +38,9 @@ class HttpRequest
 }
 
 require_once 'Zend/Json.php';
-$httpRequest = new HttpRequest(array('REQUEST_URI' => '/wines'), array('toto' => 'tata'));
-echo Zend_Json::encode($httpRequest)."\n";
-echo Zend_Json::encode("Coucou les gars")."\n";
-echo Zend_Json::encode(123)."\n";
+$httpRequest1 = new HttpRequest(array('REQUEST_URI' => '/wines'), array('toto' => 'tata'));
+$httpRequest2 = new HttpRequest(array('REQUEST_URI' => '/wines'), array('tutu' => 'titi'));
+$map = array($httpRequest1, $httpRequest2);
+echo Zend_Json::encode($httpRequest1)."\n";
+echo Zend_Json::encode($map, true)."\n";
 echo Zend_Json::encode(array("loulou" => "toto", "lala" => "tata"))."\n";

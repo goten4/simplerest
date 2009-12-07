@@ -23,7 +23,7 @@ class HttpResponse
         // Default values
         // $acceptHeader = $request->getHeader('HTTP_ACCEPT');
         // $defaultContentType = ( null == $acceptHeader ? MimeTypes::getMimeType(Formats::HTML) : $acceptHeader );
-        $this->setContentType(MimeTypes::getMimeType($request->getFormat()));
+        $this->setContentType(MimeTypes::getMimeType($request->getFormat()) . "; charset=utf-8");
         $this->_status = ( $status ? $status : HttpStatus::HTTP_OK );
         $this->_content = null;
         $this->_request = $request;

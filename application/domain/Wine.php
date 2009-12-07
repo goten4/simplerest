@@ -31,6 +31,6 @@ class Wine
 		$map["name"] = $this->getName();
 		$map["area"] = $this->getArea();
 		$map["color"] = $this->getColor();
-		return Zend_Json::encode($map);
+		return Json::encode($map);
 	}
 }

@@ -21,15 +21,7 @@ class HttpResponseTest extends PHPUnit_Framework_TestCase
     public function whenRequestHasNoAcceptHeaderConstructorShouldInitContentTypeToHTML()
     {
         $response = new HttpResponse(new HttpRequest());
-	    $this->assertEquals('text/html', $response->getContentType());
-    }
-
-    /** @test */
-    public function whenRequestHasAcceptHeaderConstructorShouldInitContentTypeToTheGivenAcceptHeader()
-    {
-        $request = new HttpRequest(array('HTTP_ACCEPT' => 'application/xml'));
-        $response = new HttpResponse($request);
-	    $this->assertEquals('application/xml', $response->getContentType());
+	    $this->assertEquals('text/html; charset=utf-8', $response->getContentType());
     }
     
     /** @test */

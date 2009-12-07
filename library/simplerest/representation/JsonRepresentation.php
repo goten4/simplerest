@@ -8,7 +8,7 @@ class JsonRepresentation extends StringRepresentation
 {
     function __construct($input)
 	{
-		$jsonInput = Zend_Json::encode($input);
+		$jsonInput = Json::encode($input);
         $this->setInput($jsonInput);
     }
 }

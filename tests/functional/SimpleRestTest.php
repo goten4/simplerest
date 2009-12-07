@@ -28,7 +28,13 @@ class SimpleRestTest extends PHPUnit_Framework_TestCase
     public function requestToJsonWinesUriShouldReturnJsonWineList()
     {
 		list($status,$content) = $this->httpUnit->get("/wines.json");
+		$map = Json::decode($content);
+		$expectedMap = array(
+			array("name"=>"Château Margaux","area"=>"Margaux","color"=>"Red"),
+			array("name"=>"Château Petrus","area"=>"Pomerol","color"=>"Red"),
+			array("name"=>"Domaine de la Romanée Conti","area"=>"Romanée Conti","color"=>"Red")
+			);
 		$this->assertEquals(HttpStatus::HTTP_OK, $status);
-		$this->assertContains("{\"name\":\"Château Margaux\",\"area\":\"Margaux\",\"color\":\"Red\"}", $content);
+		$this->assertSame($expectedMap, $map);
     }
 }
