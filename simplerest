@@ -2,19 +2,19 @@
 
 function launchTests
 {
-	phpunit $2 --syntax-check --bootstrap tests/bootstrap.php --exclude-group autoload $1
+	phpunit $2 --syntax-check --bootstrap test/bootstrap.php --exclude-group autoload $1
 }
 
 
 function launchAutoloadsTests
 {
-	phpunit $1 --syntax-check --bootstrap tests/bootstrapnoautoload.php tests/unit/library/simplerest/AutoloaderTest.php
+	phpunit $1 --syntax-check --bootstrap test/bootstrapnoautoload.php test/unit/library/simplerest/AutoloaderTest.php
 }
 
 function launchAllTests
 {
-	launchTests tests/functional
-	launchTests tests/unit
+	launchTests test/functional
+	launchTests test/unit
 	launchAutoloadsTests
 }
 
@@ -26,12 +26,12 @@ case $1 in
 		launchAllTests
 		;;
 	test:functional)
-		launchTests tests/functional
+		launchTests test/functional
 		;;
 	test)
 		if [ -z $2 ]
 		    then
-			launchTests tests/unit
+			launchTests test/unit
 		else
 			launchTests $2
 		fi
@@ -40,5 +40,8 @@ case $1 in
 		echo "Usage: restapp COMMAND"
 		echo "COMMAND:"
 		echo "	test [PATH_TO_TEST_FILE]	runs unit tests"
+		echo "	test:functional				runs functional tests"
+		echo "	test:autoloader				runs autoloader tests"
+		echo "	test:all					runs all tests"
 		;;
 esac
