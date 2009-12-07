@@ -8,21 +8,32 @@
  */
 class StringRepresentation extends Representation
 {
-    protected $_content;
+    protected $_input;
 
     /**
      * Constructor
      * 
+     * @param string $input The input string
      * @return void
      */
-    public function __construct($content)
+    public function __construct($input)
     {
-        $this->_content = $content;
+        $this->_input = $input;
     }
     
+	public function getInput()
+	{
+	    return $this->_input;
+	}
+
+	public function setInput($input)
+	{
+	    $this->_input = $input;
+	}
+
     protected function write()
     {
-        echo $this->_content;
+        echo $this->_input;
     }
 }
 

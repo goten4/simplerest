@@ -13,7 +13,8 @@ function launchAutoloadsTests
 
 function launchAllTests
 {
-	launchTests tests/
+	launchTests tests/functional
+	launchTests tests/unit
 	launchAutoloadsTests
 }
 

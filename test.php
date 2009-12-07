@@ -1,4 +1,3 @@
-#!/usr/bin/php
 <?php
 // Define path to library directory
 defined('LIBRARY_PATH')
@@ -10,37 +9,52 @@ defined('APPLICATION_PATH')
 set_include_path(implode(PATH_SEPARATOR, array(LIBRARY_PATH, get_include_path())));
 
 // Autoload library and application files
-require_once 'simplerest/Autoloader.php';
-Autoloader::init(array(LIBRARY_PATH, APPLICATION_PATH));
+//require_once 'simplerest/Autoloader.php';
+//Autoloader::init(array(LIBRARY_PATH, APPLICATION_PATH));
 
-function montest()
+class HttpRequest
 {
-    echo "coucou\n";
-    return 1;
+	protected $server;
+	protected $request;
+	
+    function __construct($server, $request)
+    {
+        $this->server = $server;
+        $this->request = $request;
+    }
+
+	public function getServer()
+	{
+	    return $this->server;
+	}
+	
+	public function setServer($server)
+	{
+	    $this->server = $server;
+	}
+	
+	public function getRequest()
+	{
+	    return $this->request;
+	}
+	
+	public function setRequest($request)
+	{
+	    $this->request = $request;
+	}
+	
+	public function toJson()
+	{
+		$map = array();
+		$map['server'] = $this->server;
+		$map['request'] = $this->request;
+	    return json_encode($map);
+	}
 }
 
-if (null == montest()) {
-    echo "Gagné !\n";
-}
-else {
-    echo "Perdu !\n";
-}
-
-#$str = "BaseResource";
-#$isPrefixedByResource = preg_match('/(?<baseName>\w+)(Resource)?/', $str, $matches);
-#if ($isPrefixedByResource) {
-#	echo "Base trouvée : " . $matches['baseName'] . "\n";
-#} else {
-#	echo "Base non trouvée\n";
-#}
-
-#$fileContent = file_get_contents("tests/unit/application/resources/Product.php");
-#$classFound = preg_match('/(?<head>(\r?\n.*)*)\r?\n(abstract)?[[:blank:]]*(class|interface) (?<name>\w+)/', $fileContent, $matches);
-#if ($classFound) {
-#	echo "Classe trouvée : " . $matches['name'] . "\n";
-#	if (strpos($matches['head'], "* @resource")) {
-#		echo " => C'est une resource\n";
-#	}
-#} else {
-#	echo "Classe non trouvée\n";
-#}
+require_once 'Zend/Json.php';
+$httpRequest = new HttpRequest(array('REQUEST_URI' => '/wines'), array('toto' => 'tata'));
+echo Zend_Json::encode($httpRequest)."\n";
+echo Zend_Json::encode("Coucou les gars")."\n";
+echo Zend_Json::encode(123)."\n";
+echo Zend_Json::encode(array("loulou" => "toto", "lala" => "tata"))."\n";

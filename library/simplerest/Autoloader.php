@@ -6,8 +6,8 @@
  * @package	simplerest
  * @author Emmanuel Bouton
  */
-class Autoloader {
-
+class Autoloader
+{
 	/**
 	* Singleton instance
 	* 
@@ -31,23 +31,22 @@ class Autoloader {
 	* 
 	* @return void
 	*/
-	protected function __construct() {
-	}
+	protected function __construct() {}
 
 	/**
 	* Enforce singleton; disallow cloning
 	* 
 	* @return void
 	*/
-	private function __clone() {
-	}
+	private function __clone() {}
 
 	/**
 	* Singleton instance
 	* 
 	* @return Autoloader
 	*/
-	public static function getInstance() {
+	public static function getInstance()
+	{
 		if (null === self::$_instance) {
 			self::$_instance = new self();
 		}
@@ -60,7 +59,8 @@ class Autoloader {
 	* @param string|array Path or Array of paths
 	* @return Autoloader
 	*/
-	public static function init($paths) {
+	public static function init($paths)
+	{
 		$autoloader = self::getInstance();
 		if (is_array($paths)) {
 			$autoloader->addBasePaths($paths);
@@ -70,7 +70,8 @@ class Autoloader {
 		return $autoloader;
 	}
 	
-	public function debug() {
+	public function debug()
+	{
 		print_r($this->_filesMap);
 	}
 
@@ -80,7 +81,8 @@ class Autoloader {
      * @param array $paths
      * @return void
      */
-	public function addBasePaths($paths) {
+	public function addBasePaths($paths)
+	{
 		foreach ($paths as $path) {
 			$this->addBasePath($path);
 		}
@@ -92,7 +94,8 @@ class Autoloader {
      * @param string $path
      * @return void
      */
-	public function addBasePath($path) {
+	public function addBasePath($path)
+	{
 		$dirIterator = new RecursiveDirectoryIterator($path);
 		$iterator = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::SELF_FIRST);
 		foreach ($iterator as $file) {
@@ -116,7 +119,8 @@ class Autoloader {
      * 
      * @return string
      */
-    public function getFilePath($className) {
+    public function getFilePath($className)
+	{
 		$key = strtolower($className);
         return ( array_key_exists($key, $this->_filesMap) ? $this->_filesMap[$key] : null );
     }
@@ -126,12 +130,14 @@ class Autoloader {
 	 * 
 	 * @return array
 	 */
-	public function getResources() {
+	public function getResources()
+	{
 		return $this->_resources;
 	}
 }
 
-function __autoload($className) {
+function __autoload($className)
+{
     $autoloader = Autoloader::getInstance();
     $path = $autoloader->getFilePath($className);
     if ($path != null && file_exists($path)) {

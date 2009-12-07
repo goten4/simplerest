@@ -19,7 +19,9 @@ class HttpUnit
 		curl_setopt($session, CURLOPT_HEADER, false);
 		
 		ob_start();
-		curl_exec($session);
+		if (curl_exec($session) == false) {
+			throw new Exception(curl_error($session));
+		}
 		$content = ob_get_contents();
 		ob_end_clean();
 		

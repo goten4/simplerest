@@ -11,57 +11,45 @@ class WinesResource extends Resource
 {
 	protected function get()
 	{
+		$wines = array();
+		$wines[] = new Wine("Château Margaux", "Margaux", "Red");
+		$wines[] = new Wine("Château Petrus", "Pomerol", "Red");
+		$wines[] = new Wine("Domaine de la Romanée Conti", "Romanée Conti", "Red");
+		
+		$representation = null;
 		switch ($this->_request->getFormat()) {
 			case Formats::XML:
-				$content =
-					"<wines>\n" .
-					"	<wine>\n" .
-					"		<name>Château Margaux</name>\n" .
-					"		<area>Margaux</area>\n" .
-					"		<color>Red</color>\n" .
-					"	</wine>\n" .
-					"	<wine>\n" .
-					"		<name>Château Petrus</name>\n" .
-					"		<area>Pomerol</area>\n" .
-					"		<color>Red</color>\n" .
-					"	</wine>\n" .
-					"	<wine>\n" .
-					"		<name>Domaine de la Romanée Conti</name>\n" .
-					"		<area>Romanée Conti</area>\n" .
-					"		<color>Red</color>\n" .
-					"	</wine>\n" .
-					"</wines>\n";
+				$content = "<wines>\n";
+				foreach ($wines as $wine) {
+					$content .= "	<wine>\n" .
+						"		<name>" . $wine->getName() . "</name>\n" .
+						"		<area>" . $wine->getArea() . "</area>\n" .
+						"		<color>" . $wine->getColor() . "</color>\n" .
+						"	</wine>\n";
+				}
+				$content .= "</wines>\n";
+				$representation = new StringRepresentation($content);
 				break;
 			case Formats::JSON:
-				$content =
-					"{ \n" .
-					"	{ 'name' => 'Château Margaux',\n" .
-					"	  'area' => 'Margaux'\n" .
-					"	  'color' => 'Red' },\n" .
-					"	{ 'name' => 'Château Petrus',\n" .
-					"	  'area' => 'Pomerol'\n" .
-					"	  'color' => 'Red' },\n" .
-					"	{ 'name' => 'Domaine de la Romanée Conti',\n" .
-					"	  'area' => 'Romanée Conti'\n" .
-					"	  'color' => 'Red' },\n" .
-					"}\n";
+				$representation = new JsonRepresentation($wines);
 				break;
-			
 			default:
 				$content =
 					"<html>\n" .
 					"<body>\n" .
 					"	<h1>Liste des vins</h1>\n" .
-					"	<ul>\n" .
-					"		<li>Château Margaux (Margaux - rouge)</li>\n" .
-					"		<li>Château Petrus (Pomerol - rouge)</li>\n" .
-					"		<li>Domaine de la Romanée Conti (Romanée Conti - rouge)</li>\n" .
-					"	</ul>\n" .
+					"	<ul>\n";
+				foreach ($wines as $wine) {
+					$content .= "		<li>" . $wine->getName() .
+								" (" . $wine->getArea() . " - " .
+								$wine->getColor() . ")</li>\n";
+				}
+				$content .= "	</ul>\n" .
 					"</body>\n" .
 					"</html>\n";
+				$representation = new StringRepresentation($content);
 				break;
 		}
-		$this->_response->setContent($content);
-		return null;
+		return $representation;
 	}
 }

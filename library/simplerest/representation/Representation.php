@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Representation abstract class
+ * Representation base class
  * 
  * @package simplerest.http
  * @author  Emmanuel Bouton
