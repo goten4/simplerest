@@ -10,6 +10,7 @@ abstract class Resource
 {
 	protected $_request;
 	protected $_response;
+	protected $_options;
 	
 	function __construct($request)
 	{
@@ -53,6 +54,16 @@ abstract class Resource
 	        $this->setContent($representation->getContent());
 	    }
 	    return $this->_response;
+	}
+	
+	public function setOptions($options)
+	{
+	    $this->_options = $options;
+	}
+	
+	public function getOptions($options)
+	{
+	    return $this->_options;
 	}
 	
 	protected function setStatus($status)

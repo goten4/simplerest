@@ -276,6 +276,7 @@ class RestApplication
 			$response = new HttpResponse($request, HttpStatus::HTTP_NOT_FOUND);
 		}
 		else {
+			$resource->setOptions($this->_options);
 		    $response = $resource->callMethod($request);
 		}
 		$response->send();
