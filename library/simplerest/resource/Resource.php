@@ -61,9 +61,19 @@ abstract class Resource
 	    $this->_options = $options;
 	}
 	
-	public function getOptions($options)
+	public function getOptions()
 	{
 	    return $this->_options;
+	}
+	
+	public function getRequest()
+	{
+	    return $this->_request;
+	}
+	
+	public function getResponse()
+	{
+	    return $this->_response;
 	}
 	
 	protected function setStatus($status)
